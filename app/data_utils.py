@@ -21,6 +21,14 @@ def flat_matrix(matrix):
     return matrix
 
 
+def load_scaled_and_flatten_data():
+    (train_images, train_labels), (test_images, test_labels) = load_data()
+    train_images, test_images = scale_data(train_images, test_images)
+    train_images = flat_matrix(train_images)
+    test_images = flat_matrix(test_images)
+    return (train_images, train_labels), (test_images, test_labels)
+
+
 def display_first_images(train_images, train_labels, color_map=plt.cm.binary, qty=25, plt_size=10):
     plt.figure(figsize=(plt_size, plt_size))
     grids_qty = math.ceil(math.sqrt(qty))
