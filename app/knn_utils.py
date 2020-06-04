@@ -2,6 +2,8 @@ import numpy as np
 
 from app.data_utils import split_to_batches
 
+DISTANCE_CALC_METHOD = "euclidean distance (L2)"
+
 
 def candidate_k_values(min_k=1, max_k=50, step=1):
     """
@@ -23,16 +25,18 @@ def predict_prob(x_test, x_train, y_train, k):
     return p_y_x(sorted_labels, k)
 
 
-def predict_prob_with_splitting_to_batches(x_test, x_train, y_train, k, batch_size=2000):
+def predict_prob_with_splitting_to_batches(x_test, x_train, y_train, k, batch_size):
     """
     Split *x_test* to batches and for each one calc matrix with probability distribution p(y|x) for every y class
     :param k: amount of nearest neighbours
     :return: list of matrices with probability distribution p(y|x) for every x_test batch
     """
-    test_batches = split_to_batches(x_test, batch_size)
-    batches_qty = len(test_batches)
-    y_prob = [predict_prob(test_batches[i], x_train, y_train, k) for i in range(batches_qty)]
-    return y_prob
+    if batch_size < len(x_test):
+        test_batches = split_to_batches(x_test, batch_size)
+        batches_qty = len(test_batches)
+        y_prob = [predict_prob(test_batches[i], x_train, y_train, k) for i in range(batches_qty)]
+        return y_prob
+    return [predict_prob(x_test, x_train, y_train, k)]
 
 
 def predict_labels(pyx_knn):
@@ -138,7 +142,6 @@ def model_select(x_val, x_train, y_val, y_train, k_values):
             - *best_error* - minimal error
             - *best_k* - *k* for which minimal error
     """
-
     print("- Calculating distances")
     distances = euclidean_distance(x_val, x_train)
     print("- Sorting labels")
@@ -156,7 +159,7 @@ def model_select(x_val, x_train, y_val, y_train, k_values):
     return best_err, best_k
 
 
-def model_select_with_splitting_to_batches(train_images, train_labels, k_values, batch_size=2500):
+def model_select_with_splitting_to_batches(x_val, x_train, y_val, y_train, k_values, batch_size):
     """
     1. Split training data to minibatches
     2. For every batch select best *k* value with min err parameter
@@ -166,17 +169,31 @@ def model_select_with_splitting_to_batches(train_images, train_labels, k_values,
             - *best_error* - minimal error
             - *best_k* - *k* for which minimal error
     """
-    print('- Splitting training data to batches')
-    train_image_batches = split_to_batches(train_images, batch_size)
-    train_label_batches = split_to_batches(train_labels, batch_size)
 
+    print('- Splitting validation data set to batches')
     best_k = k_values[0]
     best_err = np.inf
-    batches_qty = len(train_image_batches)
-    for i in range(batches_qty):
-        print('- Searching best k for batch: ', i, "/", batches_qty, sep="")
-        err, k = model_select(train_image_batches[i], train_images, train_label_batches[i], train_labels, k_values)
-        if err < best_err:
-            best_err = err
-            best_k = k
-    return best_err, best_k
+
+    if batch_size < len(x_val):
+        x_val_batches = split_to_batches(x_val, batch_size)
+        y_val_batches = split_to_batches(y_val, batch_size)
+        batches_qty = len(x_val_batches)
+
+        for i in range(batches_qty):
+            print('- Searching best k for batch: ', i, "/", batches_qty, sep="")
+            err, k = model_select(x_val_batches[i], x_train, y_val_batches[i], y_train, k_values)
+            if err < best_err:
+                best_err = err
+                best_k = k
+        return best_err, best_k
+    return model_select(x_val, x_train, y_val, y_train, k_values)
+
+
+def gen_result_report(k, val_batch_size, test_batch_size, correctness, total_time):
+    name_msg = "KNeighborsClassifier"
+    k_msg = "n_neighbors: " + str(k)
+    dist_msg = "distance: " + DISTANCE_CALC_METHOD
+    val_msg = "batch size of validation set: " + str(val_batch_size)
+    test_msg = "batch size of test set: " + str(test_batch_size)
+    param_msg = "{ " + k_msg + ", " + dist_msg + "," + val_msg + ", " + test_msg + " }"
+    return [name_msg, param_msg, correctness, total_time]
