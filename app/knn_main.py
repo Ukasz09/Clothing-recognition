@@ -72,6 +72,13 @@ def run_knn_test():
     save_result_report(report_param, REPORT_RESULT_CSV)
 
 
+def display_images_template():
+    (train_images, train_labels), (test_images, test_labels) = load_data()
+    train_images, test_images = scale_data(train_images, test_images)
+    display_example_images(train_images, train_labels)
+
+
 if __name__ == "__main__":
-    run_knn_test()
+    display_images_template()
+    # run_knn_test()
     exit(0)

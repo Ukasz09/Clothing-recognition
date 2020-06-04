@@ -2,10 +2,13 @@ from tensorflow import keras
 import matplotlib.pyplot as plt
 import math
 import csv
+import random
 
 class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
+color_maps = ['inferno', 'terrain', 'twilight_shifted']
 
 
+# -------------------------------------------------------------------------------------------------------------------- #
 def load_data():
     fashion_mnist = keras.datasets.fashion_mnist
     (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
@@ -40,20 +43,6 @@ def split_to_train_and_val(x_data, y_data, percent_of_validation_set=20):  # tod
     return (x_train, y_train), (x_val, y_val)
 
 
-def display_first_images(train_images, train_labels, color_map=plt.cm.binary, qty=25, plt_size=10):
-    plt.figure(figsize=(plt_size, plt_size))
-    grids_qty = math.ceil(math.sqrt(qty))
-    for i in range(qty):
-        plt.subplot(grids_qty, grids_qty, i + 1)
-        plt.xticks([])
-        plt.yticks([])
-        plt.grid(False)
-        plt.imshow(train_images[i], cmap=color_map)
-        plt.colorbar()
-        plt.xlabel(class_names[train_labels[i]])
-    plt.show()
-
-
 def split_to_batches(x, batch_size):
     batch_qty = int(len(x) / batch_size)
     batches = [x[i * batch_size:(i + 1) * batch_size] for i in range(batch_qty)]
@@ -72,3 +61,25 @@ def save_result_report(result_params, filename):
         wr = csv.writer(result_file, delimiter=',', quotechar='"')
         wr.writerow(["Name", "Parameter", "Accuracy", "Training time"])
         wr.writerow(result_params)
+
+
+def display_rand_images(train_images, train_labels, color_map=plt.cm.binary, qty=9, plt_size=10, plt_show=False):
+    plt.figure(figsize=(plt_size, plt_size))
+    grids_qty = math.ceil(math.sqrt(qty))
+    for i in range(qty):
+        plt.subplot(grids_qty, grids_qty, i + 1)
+        plt.xticks([])
+        plt.yticks([])
+        plt.grid(False)
+        rand_offset = random.randint(0, train_images.shape[0])
+        plt.imshow(train_images[rand_offset], cmap=color_map)
+        plt.colorbar()
+        plt.xlabel(class_names[train_labels[rand_offset]])
+    if plt_show:
+        plt.show()
+
+
+def display_example_images(all_images, all_labels):
+    for cmap in color_maps:
+        display_rand_images(all_images, all_labels, color_map=plt.get_cmap(cmap), plt_show=False)
+    plt.show()
