@@ -1,2 +1,2 @@
 Name,Parameter,Accuracy,Training time
-KNeighborsClassifier,"{ n_neighbors: 5, distance: euclidean distance (L2),batch size of validation set: 500, batch size of test set: 500 }",87.8,0:00:53.114153
+KNeighborsClassifier,"{ n_neighbors: 5, distance: euclidean distance (L2),batch size of validation set: 500, batch size of test set: 500 }",87.4,0:00:16.114059

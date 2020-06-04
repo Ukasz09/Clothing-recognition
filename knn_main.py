@@ -32,12 +32,8 @@ def run_knn_test():
 
     # best_err, best_k = model_select_with_splitting_to_batches(val_images, train_images, val_labels, train_labels,
     #                                                           k_list)
-    # best_err, best_k = model_select_with_splitting_to_batches(val_img_tmp, train_images, val_lab_tmp, train_labels,
-    #                                                           range(1, 15, 1), batch_size=VAL_BATCH_SIZE)
-    best_err = 0
-    best_k = 5
-    ##########
-
+    best_err, best_k = model_select_with_splitting_to_batches(val_img_tmp, train_images, val_lab_tmp, train_labels,
+                                                              range(1, 15, 1), batch_size=VAL_BATCH_SIZE)
     end_time = time.time()
     print("- Completed in: ", get_time_result(end_time - start_time))
 
@@ -74,14 +70,15 @@ def run_knn_test():
     print('\n------------- Saving result report to csv file -------------\n')
     report_param = gen_result_report(best_k, VAL_BATCH_SIZE, TEST_BATCH_SIZE, accuracy, total_time)
     save_result_report(report_param, REPORT_RESULT_CSV)
-    return prob_labels_list, predicted_labels
+
+
+def display_images_template():
+    (train_images, train_labels), (test_images, test_labels) = load_data()
+    train_images, test_images = scale_data(train_images, test_images)
+    plot_example_images(train_images, train_labels)
 
 
 if __name__ == "__main__":
-    (train_images, train_labels), (test_images, test_labels) = load_data()
-    train_images, test_images = scale_data(train_images, test_images)
-
-    # display_example_images(train_images, train_labels)
-    prob_label_list, predicted_labels = run_knn_test()
-    plot_image_with_predict_bar(test_images, test_labels, prob_label_list[0], predicted_labels)
+    display_images_template()
+    # run_knn_test()
     exit(0)
