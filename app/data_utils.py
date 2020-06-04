@@ -127,3 +127,4 @@ def __plot_predict_arr_graph(i, predictions_array, predicted_label, true_label):
 
     thisplot[predicted_label].set_color('red')
     thisplot[true_label].set_color('green')
+

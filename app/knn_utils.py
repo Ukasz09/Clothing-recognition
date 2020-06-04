@@ -6,7 +6,7 @@ from app.prediction_utils import get_time_result
 DISTANCE_CALC_METHOD = "euclidean distance (L2)"
 
 
-def candidate_k_values(min_k=1, max_k=50, step=1):
+def candidate_k_values(min_k=1, max_k=25, step=1):
     """
     :return: list of candidates k values to check
     """
@@ -202,7 +202,8 @@ def model_select_batches_and_selecting_val_train_proportion(x_train, y_train, k_
             best_val_perc = perc
         end_time = time.time()
         print("- Done in: ", get_time_result(end_time - start_time))
-    return best_err, best_k, best_val_perc
+    (new_best_x_train, new_best_y_train), (_, _) = split_to_train_and_val(x_train, y_train, best_val_perc)
+    return best_err, best_k, best_val_perc, new_best_x_train, new_best_y_train
 
 
 def gen_result_report(k, val_batch_size, test_batch_size, validation_set_percent, correctness, total_time):
