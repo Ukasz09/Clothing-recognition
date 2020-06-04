@@ -1,9 +1,18 @@
 import numpy as np
 import time
 from app.utils.data_utils import *
-from app.utils.prediction_utils import get_time_result
+from app.utils.prediction_utils import *
 
 DISTANCE_CALC_METHOD = "euclidean distance (L2)"
+
+
+# -------------------------------------------------------------------------------------------------------------------- #
+def pre_procesing_dataset():
+    (X_train, y_train), (X_test, y_test) = load_data()
+    X_train, X_test = scale_data(X_train, X_test)
+    X_train = flat(X_train)
+    X_test = flat(X_test)
+    return (X_train, y_train), (X_test, y_test)
 
 
 def candidate_k_values(min_k=1, max_k=25, step=1):
@@ -169,33 +178,13 @@ def model_select_with_splitting_to_batches(x_val, x_train, y_val, y_train, k_val
         batches_qty = len(x_val_batches)
 
         for i in range(batches_qty):
-            print('- Searching best k for batch: ', i, "/", batches_qty, sep="")
+            print('- Searching best k for batch: ', i + 1, "/", batches_qty, sep="")
             err, k = model_select(x_val_batches[i], x_train, y_val_batches[i], y_train, k_values)
             if err < best_err:
                 best_err = err
                 best_k = k
         return best_err, best_k
     return model_select(x_val, x_train, y_val, y_train, k_values)
-
-
-def model_select_batches_and_selecting_val_train_proportion(x_train, y_train, k_vals, batch_size, min=5, max=95,
-                                                            step=5):
-    best_err = np.inf
-    best_k = k_vals[0]
-    best_val_perc = 0
-    for perc in range(min, max, step):
-        start_time = time.time()
-        print("- Checking proportion (val to train): ", perc, "/100", sep="")
-        (new_x_train, new_y_train), (x_val, y_val) = split_to_train_and_val(x_train, y_train, perc)
-        err, k = model_select_with_splitting_to_batches(x_val, new_x_train, y_val, new_y_train, k_vals, batch_size)
-        if best_err > err:
-            best_err = err
-            best_k = k
-            best_val_perc = perc
-        end_time = time.time()
-        print("- Done in: ", get_time_result(end_time - start_time))
-    (new_best_x_train, new_best_y_train), (_, _) = split_to_train_and_val(x_train, y_train, best_val_perc)
-    return best_err, best_k, best_val_perc, new_best_x_train, new_best_y_train
 
 
 def gen_result_report(k, val_batch_size, test_batch_size, validation_set_percent, correctness, total_time):
