@@ -1,6 +1,6 @@
 import numpy as np
 
-from app.data_utils import split_to_batches
+from app.data_utils import split_to_batches, split_to_train_and_val
 
 DISTANCE_CALC_METHOD = "euclidean distance (L2)"
 
@@ -189,11 +189,28 @@ def model_select_with_splitting_to_batches(x_val, x_train, y_val, y_train, k_val
     return model_select(x_val, x_train, y_val, y_train, k_values)
 
 
-def gen_result_report(k, val_batch_size, test_batch_size, correctness, total_time):
+def model_select_batches_and_selecting_val_train_proportion(x_train, y_train, k_vals, batch_size, min=5, max=95,
+                                                            step=5):
+    best_err = np.inf
+    best_k = k_vals[0]
+    best_val_perc = 0
+    for perc in range(min, max, step):
+        print("- Checking proportion (val to train): ", perc, "/100", sep="")
+        (new_x_train, new_y_train), (x_val, y_val) = split_to_train_and_val(x_train, y_train, perc)
+        err, k = model_select_with_splitting_to_batches(x_val, new_x_train, y_val, new_y_train, k_vals, batch_size)
+        if best_err > err:
+            best_err = err
+            best_k = k
+            best_val_perc = perc
+    return best_err, best_k, best_val_perc
+
+
+def gen_result_report(k, val_batch_size, test_batch_size, validation_set_percent, correctness, total_time):
     name_msg = "KNeighborsClassifier"
     k_msg = "n_neighbors: " + str(k)
     dist_msg = "distance: " + DISTANCE_CALC_METHOD
     val_msg = "batch size of validation set: " + str(val_batch_size)
     test_msg = "batch size of test set: " + str(test_batch_size)
-    param_msg = "{ " + k_msg + ", " + dist_msg + "," + val_msg + ", " + test_msg + " }"
+    proportion = "best validation set size: " + str(validation_set_percent) + "%"
+    param_msg = "{ " + k_msg + ", " + dist_msg + "," + proportion + "," + val_msg + ", " + test_msg + " }"
     return [name_msg, param_msg, correctness, total_time]

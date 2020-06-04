@@ -15,7 +15,7 @@ def run_knn_test():
     print('\n-------------   Loading data  -------------')
 
     (train_images, train_labels), (test_images, test_labels) = load_scaled_and_flatten_data()
-    (train_images, train_labels), (val_images, val_labels) = split_to_train_and_val(train_images, train_labels)
+    # (train_images, train_labels), (val_images, val_labels) = split_to_train_and_val(train_images, train_labels)
 
     print('\n-------------   Generating k values    -------------')
 
@@ -27,22 +27,21 @@ def run_knn_test():
     start_time = time.time()
 
     # todo: tmp
-    val_img_tmp = split_to_batches(val_images, 500)[0]
-    val_lab_tmp = split_to_batches(val_labels, 500)[0]
 
-    # best_err, best_k = model_select_with_splitting_to_batches(val_images, train_images, val_labels, train_labels,
-    #                                                           k_list)
-    # best_err, best_k = model_select_with_splitting_to_batches(val_img_tmp, train_images, val_lab_tmp, train_labels,
-    #                                                           range(1, 15, 1), batch_size=VAL_BATCH_SIZE)
-    best_err = 0
-    best_k = 5
+    tmp_tr_x = split_to_batches(train_images, 500)[0]
+    tmp_tr_y = split_to_batches(train_labels, 500)[0]
+    best_err, best_k, best_val_perc = model_select_batches_and_selecting_val_train_proportion(tmp_tr_x, tmp_tr_y,
+                                                                                              k_list, VAL_BATCH_SIZE)
+
     ##########
 
     end_time = time.time()
     print("- Completed in: ", get_time_result(end_time - start_time))
 
     print('\n------------- Best k has been found -------------')
-    print('\nBest k: {num1} , best error: {num2:.4f}'.format(num1=best_k, num2=best_err))
+    print('\nBest k: {num1} , best error: {num2:.4f}, best validation set size: {num3} %'.format(
+        num1=best_k, num2=best_err, num3=best_val_perc))
+
     print('\n------------- Calculating class labels probability for test data -------------')
 
     start_time = time.time()
@@ -72,7 +71,7 @@ def run_knn_test():
     print("Predicting accuracy: ", accuracy, "%", ". Total calculation time= ", total_time, sep="")
 
     print('\n------------- Saving result report to csv file -------------\n')
-    report_param = gen_result_report(best_k, VAL_BATCH_SIZE, TEST_BATCH_SIZE, accuracy, total_time)
+    report_param = gen_result_report(best_k, VAL_BATCH_SIZE, TEST_BATCH_SIZE, best_val_perc, accuracy, total_time)
     save_result_report(report_param, REPORT_RESULT_CSV)
     return prob_labels_list, predicted_labels
 
