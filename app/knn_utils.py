@@ -1,6 +1,7 @@
 import numpy as np
-
+import time
 from app.data_utils import split_to_batches, split_to_train_and_val
+from app.prediction_utils import get_time_result
 
 DISTANCE_CALC_METHOD = "euclidean distance (L2)"
 
@@ -142,15 +143,12 @@ def model_select(x_val, x_train, y_val, y_train, k_values):
             - *best_error* - minimal error
             - *best_k* - *k* for which minimal error
     """
-    print("- Calculating distances")
     distances = euclidean_distance(x_val, x_train)
-    print("- Sorting labels")
     sorted_labels = sort_train_labels(distances, y_train)
     best_k = k_values[0]
     best_err = np.inf
     for i in range(np.size(k_values)):
         k = k_values[i]
-        print("- Checking k=", k)
         pyx = p_y_x(sorted_labels, k)
         error = classification_error(pyx, y_val)
         if best_err > error:
@@ -170,7 +168,6 @@ def model_select_with_splitting_to_batches(x_val, x_train, y_val, y_train, k_val
             - *best_k* - *k* for which minimal error
     """
 
-    print('- Splitting validation data set to batches')
     best_k = k_values[0]
     best_err = np.inf
 
@@ -195,6 +192,7 @@ def model_select_batches_and_selecting_val_train_proportion(x_train, y_train, k_
     best_k = k_vals[0]
     best_val_perc = 0
     for perc in range(min, max, step):
+        start_time = time.time()
         print("- Checking proportion (val to train): ", perc, "/100", sep="")
         (new_x_train, new_y_train), (x_val, y_val) = split_to_train_and_val(x_train, y_train, perc)
         err, k = model_select_with_splitting_to_batches(x_val, new_x_train, y_val, new_y_train, k_vals, batch_size)
@@ -202,6 +200,8 @@ def model_select_batches_and_selecting_val_train_proportion(x_train, y_train, k_
             best_err = err
             best_k = k
             best_val_perc = perc
+        end_time = time.time()
+        print("- Done in: ", get_time_result(end_time - start_time))
     return best_err, best_k, best_val_perc
 
 
