@@ -1,6 +1,6 @@
 import numpy as np
 import time
-from app.utils.data_utils import split_to_batches, split_to_train_and_val
+from app.utils.data_utils import *
 from app.utils.prediction_utils import get_time_result
 
 DISTANCE_CALC_METHOD = "euclidean distance (L2)"
@@ -38,14 +38,6 @@ def predict_prob_with_splitting_to_batches(x_test, x_train, y_train, k, batch_si
         y_prob = [predict_prob(test_batches[i], x_train, y_train, k) for i in range(batches_qty)]
         return y_prob
     return [predict_prob(x_test, x_train, y_train, k)]
-
-
-def predict_labels(pyx_knn):
-    """
-    :param pyx_knn: matrix with probability distribution p(y|x) for every class and *x_test* object  [N1xM]
-    :return: list with predicted class labels
-    """
-    return [np.argmax(row, axis=0) for row in pyx_knn]
 
 
 def predict_labels_for_every_batch(prob_labels_list):

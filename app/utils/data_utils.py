@@ -1,25 +1,47 @@
-from tensorflow import keras
+from tensorflow.keras.datasets import fashion_mnist
 import matplotlib.pyplot as plt
 import math
 import csv
 import random
 import numpy as np
 
-class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
-color_maps = ['inferno', 'viridis', 'twilight_shifted']
+CLASS_NAMES = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
+COLORS_MAPS = ['inferno', 'viridis']
+ROW_SIZE = 28
+COL_SIZE = 28
+IMG_SHAPE = (ROW_SIZE, COL_SIZE, 1)
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
 def load_data():
-    fashion_mnist = keras.datasets.fashion_mnist
-    (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
-    return (train_images, train_labels), (test_images, test_labels)
+    (X_train, y_train), (X_test, y_test) = fashion_mnist.load_data()
+    return (X_train, y_train), (X_test, y_test)
 
 
-def scale_data(train_images, test_images, value=255.0):
-    return train_images / value, test_images / value
+def scale_data(X_train, X_test, value=255.0):
+    return X_train.astype('float32') / value, X_test.astype('float32') / value
 
 
+def scale_data(X_train, X_test, X_val, value=255.0):
+    return X_train.astype('float32') / value, X_test.astype('float32') / value, X_val.astype('float32') / value
+
+
+def change_data_to_3d(X_train, X_test, X_val):
+    X_train = X_train.reshape(X_train.shape[0], *IMG_SHAPE)
+    X_test = X_test.reshape(X_test.shape[0], *IMG_SHAPE)
+    X_val = X_val.reshape(X_val.shape[0], *IMG_SHAPE)
+    return X_train, X_test, X_val
+
+
+def predict_labels(pyx):
+    """
+    :param pyx: matrix with probability distribution p(y|x) for every class and *X_test* object
+    :return: list with predicted class labels
+    """
+    return [np.argmax(row, axis=0) for row in pyx]
+
+
+############################3
 def flat_matrix(matrix):
     x, y, z = matrix.shape[0], matrix.shape[1], matrix.shape[2]
     matrix = matrix.reshape(x, y * z)
@@ -75,13 +97,13 @@ def plot_rand_images(train_images, train_labels, color_map=plt.cm.binary, qty=9,
         rand_offset = random.randint(0, train_images.shape[0])
         plt.imshow(train_images[rand_offset], cmap=color_map)
         plt.colorbar()
-        plt.xlabel(class_names[train_labels[rand_offset]])
+        plt.xlabel(CLASS_NAMES[train_labels[rand_offset]])
     if plt_show:
         plt.show()
 
 
 def plot_example_images(all_images, all_labels):
-    for cmap in color_maps:
+    for cmap in COLORS_MAPS:
         plot_rand_images(all_images, all_labels, color_map=plt.get_cmap(cmap), plt_show=False)
     plt.show()
 
@@ -113,8 +135,8 @@ def __plot_image_with_axis(i, predictions_array, predicted_label, true_label, im
     plt.yticks([])
     plt.imshow(img, cmap=plt.cm.binary)
     color = 'green' if predicted_label == true_label else 'red'
-    plt.xlabel("{} {:2.0f}% ({})".format(class_names[predicted_label], 100 * np.max(predictions_array),
-                                         class_names[true_label]), color=color)
+    plt.xlabel("{} {:2.0f}% ({})".format(CLASS_NAMES[predicted_label], 100 * np.max(predictions_array),
+                                         CLASS_NAMES[true_label]), color=color)
 
 
 def __plot_predict_arr_graph(i, predictions_array, predicted_label, true_label):
@@ -127,4 +149,3 @@ def __plot_predict_arr_graph(i, predictions_array, predicted_label, true_label):
 
     thisplot[predicted_label].set_color('red')
     thisplot[true_label].set_color('green')
-
