@@ -1,7 +1,7 @@
 import numpy as np
 import time
-from app.data_utils import split_to_batches, split_to_train_and_val
-from app.prediction_utils import get_time_result
+from app.utils.data_utils import split_to_batches, split_to_train_and_val
+from app.utils.prediction_utils import get_time_result
 
 DISTANCE_CALC_METHOD = "euclidean distance (L2)"
 
