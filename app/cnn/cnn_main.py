@@ -5,6 +5,9 @@ from sys import exit
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
+batches_to_check = [32, 50, 64, 128, 256]
+
+# -------------------------------------------------------------------------------------------------------------------- #
 LABELS_RESULT_PREF = "results/logs/predictions_"
 LOG_PREF = "results/logs/log_"
 
@@ -46,18 +49,16 @@ def run_cnn(test_name, data_loader_func, batch_size=None, epochs=None, with_augm
     print('------------- Compiling model  ')
     compile_model(model)
     start_time = time.time()
-    print('------------- Training model on normal data  ')
-    history = feed_model(model, X_train, y_train, X_val, y_val, batch_size, epochs)
-    print('------------- Saving normal data fitting history graphs ')
-    plot_history_graphs(history, HISTORY_PATH_PREF, test_name + "_norm")
-
     if with_augmentation:
         print('------------- Training model on augmented data')
-        history = feed_model(model, X_train, y_train, X_val, y_val, batch_size, epochs, augm_gen(X_train),
-                             augm_gen(X_val))
+        history = feed_model(model, X_train, y_train, X_val, y_val, batch_size, epochs, augm_gen)
         print('------------- Saving augmented data fitting history graphs ')
-        plot_history_graphs(history, HISTORY_PATH_PREF, test_name + "_manip")
-
+        plot_history_graphs(history, HISTORY_PATH_PREF, test_name + "_augm")
+    else:
+        print('------------- Training model on normal data  ')
+        history = feed_model(model, X_train, y_train, X_val, y_val, batch_size, epochs)
+        print('------------- Saving normal data fitting history graphs ')
+        plot_history_graphs(history, HISTORY_PATH_PREF, test_name + "_norm")
     print('-------------  Making labels predictions for test data')
     predictions = make_prediction(model, X_test)
     print('------------- Predict labels for test data ')
@@ -83,4 +84,8 @@ def get_debased_data(batch_size=400):
 # -------------------------------------------------------------------------------------------------------------------- #
 if __name__ == "__main__":
     run_cnn("1", get_debased_data)
+
+    X_train, y_train, X_test, y_test, X_val, y_val = pre_processing_dataset(*get_debased_data())
+    X_batch, y_batch = augm_gen(X_train).flow(X_train, y_train, batch_size=25).next()
+    plot_rand_images_from_gen(X_batch, y_batch, plt_show=True, color_map='terrain')
     exit(0)

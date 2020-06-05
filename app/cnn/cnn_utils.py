@@ -10,9 +10,8 @@ from tensorflow.keras.optimizers import Adam
 VAL_SIZE = 0.25
 RANDOM_STATE = 2046703
 
-# values with best accuracy (todo)
-EPOCHS = 75  # 75
-BATCH_SIZE = 256  # 2048
+EPOCHS = 15  # 250
+BATCH_SIZE = 32  # 128/ 2048
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -40,37 +39,31 @@ def compile_model(model):
     model.compile(optimizer=Adam(lr=0.0001, decay=1e-6), loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 
-def feed_model(model, X_train, y_train, X_val, y_val, batch_size, epochs, train_gen=None, val_gen=None):
-    if train_gen is None or val_gen is None:
-        history = model.fit(
-            X_train,
-            y_train,
-            batch_size=batch_size,
-            epochs=epochs,
-            verbose=1,
-            validation_data=(X_val, y_val)
-        )
-        return history
+def feed_model(model, X_train, y_train, X_val, y_val, batch_size, epochs, augm_gen_func=None):
+    if augm_gen_func is None:
+        return fit_normal(model, X_train, y_train, X_val, y_val, batch_size, epochs)
+    return fit_with_gen(model, X_train, y_train, X_val, y_val, batch_size, epochs, augm_gen_func)
+
+
+def fit_normal(model, X_train, y_train, X_val, y_val, batch_size, epochs):
     history = model.fit(
-        train_gen.flow(X_train, y_train, batch_size=batch_size),
-        validation_data=(train_gen.flow(X_train, y_train, batch_size=batch_size)),
-        steps_per_epoch=math.ceil(len(X_train) / batch_size), epochs=epochs,
-        validation_steps=math.ceil(len(X_val) / batch_size), )
+        X_train,
+        y_train,
+        batch_size=batch_size,
+        epochs=epochs,
+        verbose=1,
+        validation_data=(X_val, y_val)
+    )
     return history
-    # for e in range(epochs):
-    #     print('Epoch', e)
-    #     batches = 0
-    #
-    #     # combine both generators, in python 3 using zip()
-    #     for (x_batch, y_batch), (val_x, val_y) in zip(
-    #             train_gen.flow(X_train, y_train, batch_size=batch_size),
-    #             train_gen.flow(X_val, y_val, batch_size=batch_size)):
-    #         model.fit(x_batch, y_batch, validation_data=(val_x, val_y))
-    #         batches += 1
-    #         if batches >= len(X_train) / batch_size:
-    #             # we need to break the loop by hand because
-    #             # the generator loops indefinitely
-    #             break
+
+
+def fit_with_gen(model, X_train, y_train, X_val, y_val, batch_size, epochs, augm_gen):
+    history = model.fit(
+        augm_gen(X_train).flow(X_train, y_train, batch_size=batch_size),
+        validation_data=(augm_gen(X_val).flow(X_val, y_val, batch_size=batch_size)),
+        steps_per_epoch=math.ceil(len(X_train) / batch_size), epochs=epochs,
+        validation_steps=math.ceil(len(X_val) / batch_size))
+    return history
 
 
 def evaluate_accuracy(model, x_test, y_test):
@@ -90,29 +83,29 @@ def log_printer(log, path_pref, name, extension="txt"):
 
 
 def plot_history_graphs(history, path_pref, name, extension=".png"):
-    plot_accuracy_history(history, path_pref, name + "_accuracy", extension)
-    plot_losses_history(history, path_pref, name + "_losses", extension)
+    plot_accuracy_history(history, path_pref, name, extension)
+    plot_losses_history(history, path_pref, name, extension)
 
 
 def plot_accuracy_history(history, path_pref, name, extension):
     plt.plot(history.history['accuracy'])
     plt.plot(history.history['val_accuracy'])
-    plt.title('Model accuracy')
+    plt.title('Model accuracy: ' + name)
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
     plt.legend(['train', 'validation'], loc='upper left')
-    plt.savefig(path_pref + name + extension)
+    plt.savefig(path_pref + name + "_accuracy" + extension)
     plt.show()
 
 
 def plot_losses_history(history, path_pref, name, extension):
     plt.plot(history.history['loss'])
     plt.plot(history.history['val_loss'])
-    plt.title('Model loss')
+    plt.title('Model loss: ' + name)
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend(['train', 'validation'], loc='upper left')
-    plt.savefig(path_pref + name + extension)
+    plt.savefig(path_pref + name + "_losses" + extension)
     plt.show()
 
 

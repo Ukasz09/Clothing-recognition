@@ -73,7 +73,7 @@ def save_report_to_csv(result_params, filename):
         wr.writerow(result_params)
 
 
-def plot_rand_images(images_data, labels_data, color_map=plt.get_cmap('inferno'), qty=9, plt_size=10, plt_show=False):
+def plot_rand_images(img_data, labels_data, color_map=plt.get_cmap('inferno'), qty=9, plt_size=10, plt_show=False):
     plt.figure(figsize=(plt_size, plt_size))
     grids_qty = math.ceil(math.sqrt(qty))
     for i in range(qty):
@@ -81,15 +81,30 @@ def plot_rand_images(images_data, labels_data, color_map=plt.get_cmap('inferno')
         plt.xticks([])
         plt.yticks([])
         plt.grid(False)
-        rand_offset = random.randint(0, images_data.shape[0])
-        plt.imshow(images_data[rand_offset], cmap=color_map)
+        rand_offset = random.randint(0, img_data.shape[0])
+        plt.imshow(img_data[rand_offset], cmap=color_map)
         plt.colorbar()
         plt.xlabel(CLASS_NAMES[labels_data[rand_offset]])
     if plt_show:
         plt.show()
 
 
-def plot_image_with_predict_bar(images_data, images_labels, predict_matr, predict_labels, row=5, col=3, plt_show=False):
+def plot_rand_images_from_gen(x_batch, y_batch, color_map=plt.get_cmap('inferno'), qty=9, plt_size=10, plt_show=False):
+    plt.figure(figsize=(plt_size, plt_size))
+    grids_qty = math.ceil(math.sqrt(qty))
+    for i in range(qty):
+        plt.subplot(grids_qty, grids_qty, i + 1)
+        plt.xticks([])
+        plt.yticks([])
+        plt.grid(False)
+        plt.imshow(x_batch[i].reshape(28, 28), cmap=color_map)
+        plt.colorbar()
+        plt.xlabel(CLASS_NAMES[y_batch[i]])
+    if plt_show:
+        plt.show()
+
+
+def plot_image_with_predict_bar(img_data, img_labels, predict_matr, predict_labels, row=5, col=3, plt_show=False):
     """
     Plot the first X test images with predicted and true labels.
     Color predictions:
@@ -102,9 +117,9 @@ def plot_image_with_predict_bar(images_data, images_labels, predict_matr, predic
     plt.figure(figsize=(2 * 2 * col, 2 * row))
     for i in range(num_images):
         plt.subplot(row, 2 * col, 2 * i + 1)
-        __plot_image_with_axis(i, predict_matr[i], predict_labels[i], images_labels, images_data)
+        __plot_image_with_axis(i, predict_matr[i], predict_labels[i], img_labels, img_data)
         plt.subplot(row, 2 * col, 2 * i + 2)
-        __plot_predict_arr_graph(i, predict_matr[i], predict_labels[i], images_labels)
+        __plot_predict_arr_graph(i, predict_matr[i], predict_labels[i], img_labels)
     plt.tight_layout()
     if plt_show:
         plt.show()
