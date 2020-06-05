@@ -24,11 +24,11 @@ def augm_gen(data):
     return datagen
 
 
-def scale_data(X_train, X_test, value=255.0):
+def scale_x(X_train, X_test, value=255.0):
     return X_train.astype('float32') / value, X_test.astype('float32') / value
 
 
-def scale_data(X_train, X_test, X_val, value=255.0):
+def scale_all_x(X_train, X_test, X_val, value=255.0):
     return X_train.astype('float32') / value, X_test.astype('float32') / value, X_val.astype('float32') / value
 
 
@@ -44,8 +44,8 @@ def flat(matrix):
     return matrix.reshape(x, y * z)
 
 
-def split_to_train_and_val(x_data, y_data, val_size_perc=20):
-    batch_size = int(val_size_perc / 100 * len(x_data))
+def split_to_train_and_val(x_data, y_data, val_size):
+    batch_size = int(val_size * len(x_data))
     x_val = x_data[0: batch_size]
     y_val = y_data[0: batch_size]
     x_train = x_data[batch_size:]
@@ -66,11 +66,17 @@ def save_labels_to_csv(labels_list, filename):
             wr.writerow([i, labels_list[i]])
 
 
-def save_report_to_csv(result_params, filename):
-    with open(filename + '.csv', 'w', newline='') as result_file:
-        wr = csv.writer(result_file, delimiter=',', quotechar='"')
-        wr.writerow(["Name", "Parameter", "Accuracy", "Training time"])
-        wr.writerow(result_params)
+def log_printer(log, path_pref, name, extension="txt", append=False):
+    if name is None:
+        path = path_pref + "." + extension
+    else:
+        path = path_pref + name + "." + extension
+    if append:
+        with open(path, 'a') as f:
+            print(log, file=f)
+    else:
+        with open(path, 'w') as f:
+            print(log, file=f)
 
 
 def plot_rand_images(img_data, labels_data, color_map=plt.get_cmap('inferno'), qty=9, plt_size=10, plt_show=False):

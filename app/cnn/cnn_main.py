@@ -3,13 +3,14 @@ from app.cnn.cnn_utils import *
 import os
 from sys import exit
 
+# to remove keras warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 batches_to_check = [32, 50, 64, 128, 256]
 
 # -------------------------------------------------------------------------------------------------------------------- #
 LABELS_RESULT_PREF = "results/logs/predictions_"
-LOG_PREF = "results/logs/log_"
+LOG_PREF = "results/logs/log"
 
 MODEL_PATH_PREF = "results/models/model_"
 HISTORY_PATH_PREF = "results/models/history_"

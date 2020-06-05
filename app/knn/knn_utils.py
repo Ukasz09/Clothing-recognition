@@ -5,14 +5,28 @@ from app.utils.prediction_utils import *
 
 DISTANCE_CALC_METHOD = "euclidean distance (L2)"
 
+# -------------------------------------------------------------------------------------------------------------------- #
+PREDICTION_RESULT_CSV = "knn/results/logs/knn_predictions"
+K_VALUE_SEARCHING_LOG = "knn/results/logs/log_k_searching"
+CALCULATING_ACCURACY = "knn/results/logs/accuracy_k"
+
+
+def log(txt_line, file_name):
+    log_printer(txt_line, file_name, None, append=True)
+    print(txt_line)
+
+
+def clear_log():
+    log_printer(" ", K_VALUE_SEARCHING_LOG, None)
+
 
 # -------------------------------------------------------------------------------------------------------------------- #
-def pre_procesing_dataset():
-    (X_train, y_train), (X_test, y_test) = load_normal_data()
-    X_train, X_test = scale_data(X_train, X_test)
+def pre_processing_dataset():
+    X_train, y_train, X_test, y_test = load_normal_data()
+    X_train, X_test = scale_x(X_train, X_test)
     X_train = flat(X_train)
     X_test = flat(X_test)
-    return (X_train, y_train), (X_test, y_test)
+    return X_train, y_train, X_test, y_test
 
 
 def candidate_k_values(min_k=1, max_k=25, step=1):
@@ -149,6 +163,7 @@ def model_select(x_val, x_train, y_val, y_train, k_values):
     best_k = k_values[0]
     best_err = np.inf
     for i in range(np.size(k_values)):
+        print("Checking k=", k_values[i])
         k = k_values[i]
         pyx = p_y_x(sorted_labels, k)
         error = classification_error(pyx, y_val)
@@ -178,11 +193,14 @@ def model_select_with_splitting_to_batches(x_val, x_train, y_val, y_train, k_val
         batches_qty = len(x_val_batches)
 
         for i in range(batches_qty):
-            print('- Searching best k for batch: ', i + 1, "/", batches_qty, sep="")
+            log('Searching best k for batch: ' + str(i + 1) + '/' + str(batches_qty), K_VALUE_SEARCHING_LOG)
+            start_time = time.time()
             err, k = model_select(x_val_batches[i], x_train, y_val_batches[i], y_train, k_values)
             if err < best_err:
                 best_err = err
                 best_k = k
+            end_time = time.time()
+            log("Done in: " + convert_time(end_time - start_time), K_VALUE_SEARCHING_LOG)
         return best_err, best_k
     return model_select(x_val, x_train, y_val, y_train, k_values)
 

@@ -17,7 +17,7 @@ BATCH_SIZE = 32  # 128/ 2048
 # -------------------------------------------------------------------------------------------------------------------- #
 def pre_processing_dataset(X_train, y_train, X_test, y_test):
     X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=VAL_SIZE, random_state=RANDOM_STATE)
-    X_train, X_test, X_val = scale_data(X_train, X_test, X_val)
+    X_train, X_test, X_val = scale_all_x(X_train, X_test, X_val)
     X_train, X_test, X_val = change_data_to_3d(X_train, X_test, X_val)
     return X_train, y_train, X_test, y_test, X_val, y_val
 
@@ -77,11 +77,6 @@ def make_prediction(model, x_test):
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
-def log_printer(log, path_pref, name, extension="txt"):
-    with open(path_pref + name + "." + extension, 'w') as f:
-        print(log, file=f)
-
-
 def plot_history_graphs(history, path_pref, name, extension=".png"):
     plot_accuracy_history(history, path_pref, name, extension)
     plot_losses_history(history, path_pref, name, extension)
