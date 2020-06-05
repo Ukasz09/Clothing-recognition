@@ -8,7 +8,7 @@ DISTANCE_CALC_METHOD = "euclidean distance (L2)"
 
 # -------------------------------------------------------------------------------------------------------------------- #
 def pre_procesing_dataset():
-    (X_train, y_train), (X_test, y_test) = load_data()
+    (X_train, y_train), (X_test, y_test) = load_normal_data()
     X_train, X_test = scale_data(X_train, X_test)
     X_train = flat(X_train)
     X_test = flat(X_test)

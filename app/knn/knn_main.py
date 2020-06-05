@@ -2,8 +2,8 @@ from app.utils.data_utils import *
 from app.knn.knn_utils import *
 from app.utils.prediction_utils import *
 
-PREDICTION_RESULT_CSV = "csv/knn_prediction.csv"
-REPORT_RESULT_CSV = "csv/knn_report.csv"
+PREDICTION_RESULT_CSV = "results/knn_prediction.results"
+REPORT_RESULT_CSV = "results/knn_report.results"
 
 VAL_BATCH_SIZE = 2500
 TEST_BATCH_SIZE = 2000
@@ -23,12 +23,12 @@ def run_knn_test(best_val_perc=25, best_k=5):
     print("- Completed in: ", calculating_time)
     print('\n------------- Choosing most probable labels for test data ')
     predicted_labels = predict_labels_for_every_batch(prediction_list)
-    print('------------- Saving prediction results to csv file  ')
+    print('------------- Saving prediction results to results file  ')
     save_labels_to_csv(predicted_labels, PREDICTION_RESULT_CSV)
     print('------------- Calculating prediction accuracy  ')
     accuracy = calc_accuracy(predicted_labels, y_test)
     print("Predicting accuracy: ", accuracy, "%", ". Total calculation time= ", calculating_time, sep="")
-    print('\n------------- Saving result report to csv file ')
+    print('\n------------- Saving result report to results file ')
     report_param = gen_result_report(best_k, VAL_BATCH_SIZE, TEST_BATCH_SIZE, best_val_perc, accuracy, calculating_time)
     save_report_to_csv(report_param, REPORT_RESULT_CSV)
     return prediction_list, predicted_labels
@@ -62,7 +62,7 @@ def select_best_k_and_val_proportion(x_train, y_train, k_vals, batch_size, min=5
 
 
 if __name__ == "__main__":
-    (train_images, train_labels), (test_images, test_labels) = load_data()
+    (train_images, train_labels), (test_images, test_labels) = load_normal_data()
     train_images, test_images = scale_data(train_images, test_images)
 
     prob_label_list, predicted_labels = run_knn_test()

@@ -12,9 +12,9 @@ IMG_SHAPE = (ROW_SIZE, COL_SIZE, 1)
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
-def load_data():
+def load_normal_data():
     (X_train, y_train), (X_test, y_test) = fashion_mnist.load_data()
-    return (X_train, y_train), (X_test, y_test)
+    return X_train, y_train, X_test, y_test
 
 
 def scale_data(X_train, X_test, value=255.0):
@@ -53,14 +53,14 @@ def split_to_batches(x, batch_size):
 
 
 def save_labels_to_csv(labels_list, filename):
-    with open(filename, 'w', newline='') as csv_file:
+    with open(filename + '.csv', 'w', newline='') as csv_file:
         wr = csv.writer(csv_file, delimiter=',', quotechar='"')
         for i in range(len(labels_list)):
             wr.writerow([i, labels_list[i]])
 
 
 def save_report_to_csv(result_params, filename):
-    with open(filename, 'w', newline='') as result_file:
+    with open(filename + '.csv', 'w', newline='') as result_file:
         wr = csv.writer(result_file, delimiter=',', quotechar='"')
         wr.writerow(["Name", "Parameter", "Accuracy", "Training time"])
         wr.writerow(result_params)
