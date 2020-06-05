@@ -26,18 +26,19 @@ def clear_log():
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
-def run_cnn(test_name, data_loader_func, batch_size=None, epochs=None):
+def run_cnn(test_name, data_loader_func, batch_size=None, epochs=None, with_augmentation=True):
     clear_log()
-    log('Test name: ' + test_name + "\n")
+    print('------------- CNN model  ')
+    print('------------- Loading data  ')
     if epochs is None:
         epochs = EPOCHS
     if batch_size is None:
         batch_size = BATCH_SIZE
+    X_train, y_train, X_test, y_test, X_val, y_val = pre_processing_dataset(*data_loader_func())
+    log('Test name: ' + test_name + "\n")
     log('Batch size: ' + str(batch_size))
     log('Epochs: ' + str(epochs))
-    print('------------- CNN model  ')
-    print('------------- Loading data  ')
-    X_train, y_train, X_test, y_test, X_val, y_val = pre_processing_dataset(*data_loader_func())
+    log('Started data size qty: ' + str(X_train.shape[0]))
     print('------------- Creating model  ')
     model = create_model()
     print('------------- Saving model image ')
@@ -45,10 +46,18 @@ def run_cnn(test_name, data_loader_func, batch_size=None, epochs=None):
     print('------------- Compiling model  ')
     compile_model(model)
     start_time = time.time()
-    print('------------- Training model  ')
+    print('------------- Training model on normal data  ')
     history = feed_model(model, X_train, y_train, X_val, y_val, batch_size, epochs)
-    print('------------- Saving fitting history graphs ')
-    plot_history_graphs(history, HISTORY_PATH_PREF, test_name)
+    print('------------- Saving normal data fitting history graphs ')
+    plot_history_graphs(history, HISTORY_PATH_PREF, test_name + "_norm")
+
+    if with_augmentation:
+        print('------------- Training model on augmented data')
+        history = feed_model(model, X_train, y_train, X_val, y_val, batch_size, epochs, augm_gen(X_train),
+                             augm_gen(X_val))
+        print('------------- Saving augmented data fitting history graphs ')
+        plot_history_graphs(history, HISTORY_PATH_PREF, test_name + "_manip")
+
     print('-------------  Making labels predictions for test data')
     predictions = make_prediction(model, X_test)
     print('------------- Predict labels for test data ')
@@ -66,7 +75,7 @@ def run_cnn(test_name, data_loader_func, batch_size=None, epochs=None):
 
 
 # for tests
-def get_debased_data(batch_size=500):
+def get_debased_data(batch_size=400):
     debased = [split_to_batches(d, batch_size)[0] for d in [*load_normal_data()]]
     return tuple(debased)
 

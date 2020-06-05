@@ -11,7 +11,7 @@ VAL_SIZE = 0.25
 RANDOM_STATE = 2046703
 
 # values with best accuracy (todo)
-EPOCHS = 25  # 75
+EPOCHS = 75  # 75
 BATCH_SIZE = 256  # 2048
 
 
@@ -40,16 +40,37 @@ def compile_model(model):
     model.compile(optimizer=Adam(lr=0.0001, decay=1e-6), loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 
-def feed_model(model, X_train, y_train, X_val, y_val, batch_size, epochs):
+def feed_model(model, X_train, y_train, X_val, y_val, batch_size, epochs, train_gen=None, val_gen=None):
+    if train_gen is None or val_gen is None:
+        history = model.fit(
+            X_train,
+            y_train,
+            batch_size=batch_size,
+            epochs=epochs,
+            verbose=1,
+            validation_data=(X_val, y_val)
+        )
+        return history
     history = model.fit(
-        X_train,
-        y_train,
-        batch_size=batch_size,
-        epochs=epochs,
-        verbose=1,
-        validation_data=(X_val, y_val),
-    )
+        train_gen.flow(X_train, y_train, batch_size=batch_size),
+        validation_data=(train_gen.flow(X_train, y_train, batch_size=batch_size)),
+        steps_per_epoch=math.ceil(len(X_train) / batch_size), epochs=epochs,
+        validation_steps=math.ceil(len(X_val) / batch_size), )
     return history
+    # for e in range(epochs):
+    #     print('Epoch', e)
+    #     batches = 0
+    #
+    #     # combine both generators, in python 3 using zip()
+    #     for (x_batch, y_batch), (val_x, val_y) in zip(
+    #             train_gen.flow(X_train, y_train, batch_size=batch_size),
+    #             train_gen.flow(X_val, y_val, batch_size=batch_size)):
+    #         model.fit(x_batch, y_batch, validation_data=(val_x, val_y))
+    #         batches += 1
+    #         if batches >= len(X_train) / batch_size:
+    #             # we need to break the loop by hand because
+    #             # the generator loops indefinitely
+    #             break
 
 
 def evaluate_accuracy(model, x_test, y_test):

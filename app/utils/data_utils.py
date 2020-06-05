@@ -1,3 +1,4 @@
+from keras_preprocessing.image import ImageDataGenerator
 from tensorflow.keras.datasets import fashion_mnist
 import matplotlib.pyplot as plt
 import math
@@ -15,6 +16,12 @@ IMG_SHAPE = (ROW_SIZE, COL_SIZE, 1)
 def load_normal_data():
     (X_train, y_train), (X_test, y_test) = fashion_mnist.load_data()
     return X_train, y_train, X_test, y_test
+
+
+def augm_gen(data):
+    datagen = ImageDataGenerator(rotation_range=90, horizontal_flip=True, vertical_flip=True)
+    datagen.fit(data)
+    return datagen
 
 
 def scale_data(X_train, X_test, value=255.0):
