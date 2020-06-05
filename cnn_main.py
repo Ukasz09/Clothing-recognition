@@ -9,11 +9,11 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 batches_to_check = [32, 50, 64, 128, 256]
 
 # -------------------------------------------------------------------------------------------------------------------- #
-LABELS_RESULT_PREF = "results/logs/predictions_"
-LOG_PREF = "results/logs/log"
+LABELS_RESULT_PREF = "app/cnn/results/logs/predictions_"
+LOG_PREF = "app/cnn/results/logs/log"
 
-MODEL_PATH_PREF = "results/models/model_"
-HISTORY_PATH_PREF = "results/models/history_"
+MODEL_PATH_PREF = "app/cnn/results/models/model_"
+HISTORY_PATH_PREF = "app/cnn/results/models/history_"
 
 log_text = ""
 
@@ -77,14 +77,14 @@ def run_cnn(test_name, data_loader_func, batch_size=None, epochs=None, with_augm
 
 
 # for tests
-def get_debased_data(batch_size=400):
+def get_debased_data(batch_size=100):
     debased = [split_to_batches(d, batch_size)[0] for d in [*load_normal_data()]]
     return tuple(debased)
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
 if __name__ == "__main__":
-    run_cnn("1_epoch250_batch128", load_normal_data)
+    run_cnn("1_epoch150_batch64", load_normal_data)
     # X_train, y_train, X_test, y_test, X_val, y_val = pre_processing_dataset(*get_debased_data())
     # X_batch, y_batch = augm_gen(X_train).flow(X_train, y_train, batch_size=25).next()
     # plot_rand_images_from_gen(X_batch, y_batch, plt_show=True, color_map='terrain')

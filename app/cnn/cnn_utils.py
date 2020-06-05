@@ -10,8 +10,8 @@ from tensorflow.keras.optimizers import Adam
 VAL_SIZE = 0.25
 RANDOM_STATE = 2046703
 
-EPOCHS = 15  # 250
-BATCH_SIZE = 32  # 128/ 2048
+EPOCHS = 150
+BATCH_SIZE = 64
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -90,7 +90,7 @@ def plot_accuracy_history(history, path_pref, name, extension):
     plt.xlabel('epoch')
     plt.legend(['train', 'validation'], loc='upper left')
     plt.savefig(path_pref + name + "_accuracy" + extension)
-    plt.show()
+    #plt.show()
 
 
 def plot_losses_history(history, path_pref, name, extension):
@@ -101,7 +101,7 @@ def plot_losses_history(history, path_pref, name, extension):
     plt.xlabel('epoch')
     plt.legend(['train', 'validation'], loc='upper left')
     plt.savefig(path_pref + name + "_losses" + extension)
-    plt.show()
+    #plt.show()
 
 
 def plot_model_svg(model, path_pref, name):
