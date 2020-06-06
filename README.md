@@ -1,4 +1,4 @@
-# :dress: Fashion Mnist  [![License](https://img.shields.io/badge/licence-MIT-blue)]
+# :dress: Fashion Mnist  [![License](https://img.shields.io/badge/licence-MIT-blue)](https://choosealicense.com/licenses/mit/)
 
 ## Introduction
 
@@ -12,7 +12,7 @@ Fashion-MNIST dataset of Zalando's article images - replacement for the original
 
 Each example is a 28x28 grayscale image, associated with a label from 10 classes. 
 
-![dataset_example](/app/knn/models/example__rand_img_bw.png)
+![dataset_example](/app/knn/results/models/example__rand_img_bw.png)
 (You can generate your plots by using function: `app.utils.data_utils.plot_rand_images`)
 
 ### Content
@@ -54,21 +54,22 @@ For KNN all algorithm methods, utilities for plotting images and manipulate of d
 
 **Examples**:
 
-![normalisation_example](/app/knn/models/example__rand_img_bw.png)
+![normalisation_example](/app/knn/results/models/example__rand_img_bw.png)
 
 **Used metrics to measure “closeness”**:
 
 | Attempt_No | Algorithm | Max Accuracy |
+| ---------- | --------- | ------------ | 
 | 1 | Hamming Distance | 45% |
-| 2 | Euclidean Distance (L2) | 84,77% | 
+| 2 | Euclidean Distance (L2) | 84,77% |
 
 KNN is an exception to general workflow for building/testing supervised machine learning models. There is no model build and becouse of that we don't have a training and validating set. All what we can do is selecting best k parameter and "closeness" parameter. To find it we can split our data to sth like "training" and "validation" set, which will be used in distance calculating method.
 
-<ins> Splitting proportion </ins>: 25%
-<ins> "Train" images qty <ins>: 45000
-<ins> "Validation" images qty <ins>: 15000
+- <ins> Splitting proportion </ins>: 25%
+- <ins> "Train" images qty <ins>: 45000
+- <ins> "Validation" images qty <ins>: 15000
 
-![k_search_log](/app/knn/models/example__rand_img_bw.png)
+![k_search_log](/app/knn/results/models/example__rand_img_bw.png)
 
 Finally we found best parameter **k=7**
 
@@ -97,7 +98,7 @@ Used augmentations techniques:
 
 Example augmentated data:
 
-![augmentated_data](/app/knn/models/example__rand_img_bw.png)
+![augmentated_data](/app/knn/results/models/example__rand_img_bw.png)
 (You can generate your augmentiated images plots by using function: `app.utils.data_utils.plot_rand_images_from_gen`)
 
 Validation set to training set proportions: 1/4
@@ -106,7 +107,7 @@ Validation set to training set proportions: 1/4
 
 <ins>Model 1:</ins>
 
-![model_1](/app/knn/models/example__rand_img_bw.png)
+![model_1](/app/knn/results/models/example__rand_img_bw.png)
 
 | Layers | Description |
 | ------ | ----------- |
@@ -117,7 +118,7 @@ Validation set to training set proportions: 1/4
 
 <ins>Model 2:</ins>
 
-![model_2](/app/knn/models/example__rand_img_bw.png)
+![model_2](/app/knn/results/models/example__rand_img_bw.png)
 
 | Layers | Description |
 | ------ | ----------- |
@@ -141,14 +142,14 @@ Validation set to training set proportions: 1/4
 
 <ins> Best result: </ins>
 
-**Accuracy: 84.77%**
-<ins> k: 7 </ins>
-Distance calculation method: euclidean distance (L2)
-Train images qty: 45000
-Total calculation time= 0:05:45
-Total k searching time= 0:18:51
+-**Accuracy: 84.77%**
+-<ins> k: 7 </ins>
+-Distance calculation method: euclidean distance (L2)
+-Train images qty: 45000
+-Total calculation time= 0:05:45
+-Total k searching time= 0:18:51
 
-![Benchmark](/app/knn/models/example__rand_img_bw.png)
+![Benchmark](/app/knn/results/models/example__rand_img_bw.png)
 
 As we can see, compared to benchmark our result is quite good, wheras relatively short training time
 
@@ -156,53 +157,53 @@ As we can see, compared to benchmark our result is quite good, wheras relatively
 
 **First attempt:**
 
-<ins> Test name: </ins> 1_epoch150_batch64
+<ins> Test name: </ins>  1_epoch150_batch64
 
-**Prediction accuracy: 84.61%** 
-Batch size: 64
-Epochs: 150
-Started data size qty: 45000
-Prediction loss: 0.44
-Total calculation time: 3:28:06
+- **Prediction accuracy: 84.61%** 
+- Batch size: 64
+- Epochs: 150
+- Started data size qty: 45000
+- Prediction loss: 0.44
+- Total calculation time: 3:28:06
 
-![Losses1](/app/knn/models/example__rand_img_bw.png)
-![Accuracy1](/app/knn/models/example__rand_img_bw.png)
+![Losses1](/app/knn/results/models/example__rand_img_bw.png)
+![Accuracy1](/app/knn/results/models/example__rand_img_bw.png)
 
 As we can see, futher increasing epochs value doesn't have sense, because our accuracy and losses are becaming more and more flat. We change our model and (knowing that test data are positioned straight) we reduce rotation value to 5 and add negligible zoom to augmentation) 
 
 ___
 **Second attempt**:
 
-<ins> Test name: </ins> X
+<ins> Test name: </ins> 2_epoch120_batch64
 
-**Prediction accuracy: X%** 
-Batch size: 64
-Epochs: 120
-Started data size qty: 45000
-Prediction loss: X
-Total calculation time: X
+- **Prediction accuracy: 88,6%** 
+- Batch size: 64
+- Epochs: 120
+- Started data size qty: 45000
+- Prediction loss: 0.33
+- Total calculation time: 2:25:54
 
-![Losses2](https://raw.githubusercontent.com/Ukasz09/Cloathing-recognition/master/app/cnn/models/2.png)
-![Accuracy2](https://raw.githubusercontent.com/Ukasz09/Cloathing-recognition/master/app/cnn/models/2.png)
+![Losses2](/app/knn/results/models/example__rand_img_bw.png)
+![Accuracy2](/app/knn/results/models/example__rand_img_bw.png)
 
-<some text>
+We achieve better results. Check if we can gain even more from this model by increasing batch size and slightly epochs too
 
 ___
 **Third attempt:**
 
 <ins> Test name: </ins> X 
 
-**Prediction accuracy: X%** 
-Batch size: x
-Epochs: x
-Started data size qty: 45000
-Prediction loss: X
-Total calculation time: X
+- **Prediction accuracy: X%** 
+- Batch size: x
+- Epochs: x
+- Started data size qty: 45000
+- Prediction loss: X
+- Total calculation time: X
 
-![Losses3](https://raw.githubusercontent.com/Ukasz09/Cloathing-recognition/master/app/cnn/models/2.png)
-![Accuracy3](https://raw.githubusercontent.com/Ukasz09/Cloathing-recognition/master/app/cnn/models/2.png)
+![Losses3](/app/knn/results/models/example__rand_img_bw.png)
+![Accuracy3](https://raw.githubusercontent.com/Ukasz09/Clothing-recognition/master/app/knn/results/models/example__rand_img_bw.png)
 
-results <summary>
+<results summary>
 
 ## Usage
 
