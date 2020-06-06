@@ -10,7 +10,7 @@ from tensorflow.keras.optimizers import Adam
 VAL_SIZE = 0.25
 RANDOM_STATE = 2046703
 
-EPOCHS = 150
+EPOCHS = 120 
 BATCH_SIZE = 64
 
 
@@ -23,14 +23,22 @@ def pre_processing_dataset(X_train, y_train, X_test, y_test):
 
 
 def create_model():
+    # return keras.Sequential([
+    #     Conv2D(32, (3, 3), input_shape=IMG_SHAPE, activation='relu'),
+    #     MaxPooling2D(pool_size=(2, 2)),
+    #     Conv2D(64, (3, 3), input_shape=IMG_SHAPE, activation='relu'),
+    #     MaxPooling2D(pool_size=(2, 2)),
+    #     Conv2D(128, (3, 3), activation='relu'),
+    #     Flatten(),
+    #     Dense(128, activation='relu'),
+    #     Dense(10, activation='softmax')
+    # ])
     return keras.Sequential([
-        Conv2D(32, (3, 3), input_shape=IMG_SHAPE, activation='relu'),
-        MaxPooling2D(pool_size=(2, 2)),
-        Conv2D(64, (3, 3), input_shape=IMG_SHAPE, activation='relu'),
-        MaxPooling2D(pool_size=(2, 2)),
-        Conv2D(128, (3, 3), activation='relu'),
+        Conv2D(filters=32, kernel_size=3, activation='relu', input_shape=IMG_SHAPE),
+        MaxPooling2D(pool_size=2),
+        Dropout(0.2),
         Flatten(),
-        Dense(128, activation='relu'),
+        Dense(32, activation='relu'),
         Dense(10, activation='softmax')
     ])
 

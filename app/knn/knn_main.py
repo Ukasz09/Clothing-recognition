@@ -67,14 +67,16 @@ def get_debased_data(batch_size=500):
 
 def plot_examples(predictions, predicted_labels):
     X_train, y_train, X_test, y_test = load_normal_data()
-    plot_rand_images(X_train, y_train, RAND_IMG_PREF, 'png')
+    plot_rand_images(X_train, y_train, RAND_IMG_PREF, 'png', plt_show=True)
     plot_image_with_predict_bar(X_test, y_test, predictions, predicted_labels, PREDICTED_IMG_BAR_PREF, 'png',
                                 plt_show=True)
 
 
 if __name__ == "__main__":
-    X_train, y_train, X_test, y_test = pre_processing_dataset()
-    best_k = select_best_k(X_train, y_train)
-    predictions_list, predicted_labels = run_knn_test(k=best_k)
-    plot_examples(predictions_list[0], predicted_labels)
+    # X_train, y_train, X_test, y_test = pre_processing_dataset()
+    # best_k = select_best_k(X_train, y_train)
+    # predictions_list, predicted_labels = run_knn_test(k=best_k)
+    # plot_examples(predictions_list[0], predicted_labels)
+    X_train, y_train, X_test, y_test = load_normal_data()
+    plot_rand_images(X_train, y_train, RAND_IMG_PREF, 'png', qty=25, plt_show=True, color_map='binary')
     exit(0)

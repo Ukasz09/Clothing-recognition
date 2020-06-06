@@ -76,6 +76,18 @@ def predict_labels_for_every_batch(prob_labels_list):
     return predict
 
 
+def hamming_distance(X, X_train):
+    """
+    Between *X* and *X_train*.
+    :param X: what compare [N1xD]
+    :param X_train: to what compare [N2xD]
+    :return: matrix distances between "X" and "X_train" [N1xN2]
+    """
+    X_arr = X.toarray().astype(int)
+    X_arr_trans = np.transpose(X_train.toarray()).astype(int)
+    return np.array(X_arr.shape[1] - X_arr @ X_arr_trans - (1 - X_arr) @ (1 - X_arr_trans))
+
+
 def euclidean_distance(x, x_train):
     """
     Euclidean distance (L2) between *X* and *X_train*.

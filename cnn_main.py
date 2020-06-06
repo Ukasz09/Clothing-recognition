@@ -9,13 +9,13 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 batches_to_check = [32, 50, 64, 128, 256]
 
 # -------------------------------------------------------------------------------------------------------------------- #
-LABELS_RESULT_PREF = "results/logs/predictions_"
-LOG_PREF = "results/logs/log"
+LABELS_RESULT_PREF = "app/cnn/results/logs/predictions_"
+LOG_PREF = "app/cnn/results/logs/log"
 
-MODEL_PATH_PREF = "results/models/model_"
-HISTORY_PATH_PREF = "results/models/history_"
-RAND_IMG_PREF = "results/models/example2_"
-PREDICTED_IMG_BAR_PREF = "results/models/example_"
+MODEL_PATH_PREF = "app/cnn/results/models/model_"
+HISTORY_PATH_PREF = "app/cnn/results/models/history_"
+RAND_IMG_PREF = "app/cnn/results/models/example2_"
+PREDICTED_IMG_BAR_PREF = "app/cnn/results/models/example_"
 MODEL_NUMBER = '2'
 log_text = ""
 
@@ -96,6 +96,6 @@ def plot_examples(predictions, predicted_labels, qty=9):
 
 if __name__ == "__main__":
     test_name = str(MODEL_NUMBER) + '_epoch' + str(EPOCHS) + '_batch' + str(BATCH_SIZE)
-    predictions, predicted_labels = run_cnn(test_name, get_debased_data)
+    predictions, predicted_labels = run_cnn(test_name, load_normal_data)
     # plot_examples(predictions, predicted_labels)
     exit(0)

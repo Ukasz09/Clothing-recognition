@@ -1,9 +1,0 @@
-Test name: 1
-
-Batch size: 32
-Epochs: 15
-Started data size qty: 300
-Prediction accuracy: 31.5% 
-Prediction loss: 1.76
-Total calculation time: 0:00:11.607685
-

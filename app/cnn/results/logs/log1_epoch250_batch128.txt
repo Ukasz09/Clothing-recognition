@@ -1,9 +1,0 @@
-Test name: 1_epoch250_batch128
-
-Batch size: 128
-Epochs: 250
-Started data size qty: 75
-Prediction accuracy: 39.0% 
-Prediction loss: 2.55
-Total calculation time: 0:00:57.750210
-

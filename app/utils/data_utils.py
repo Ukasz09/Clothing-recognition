@@ -19,7 +19,7 @@ def load_normal_data():
 
 
 def augm_gen(data):
-    datagen = ImageDataGenerator(rotation_range=90, horizontal_flip=True, vertical_flip=True)
+    datagen = ImageDataGenerator(rotation_range=5, horizontal_flip=True, vertical_flip=True, zoom_range=0.1)
     datagen.fit(data)
     return datagen
 
@@ -37,6 +37,10 @@ def change_data_to_3d(X_train, X_test, X_val):
     X_test = X_test.reshape(X_test.shape[0], *IMG_SHAPE)
     X_val = X_val.reshape(X_val.shape[0], *IMG_SHAPE)
     return X_train, X_test, X_val
+
+
+def change_data_to_2d(X_data):
+    return X_data.reshape(X_data.shape[0], IMG_SHAPE[0], IMG_SHAPE[1])
 
 
 def flat(matrix):
@@ -79,7 +83,8 @@ def log_printer(log, path_pref, name, extension="txt", append=False):
             print(log, file=f)
 
 
-def plot_rand_images(img_data, labels_data, path, extension, color_map=plt.get_cmap('inferno'), qty=9, plt_size=10, plt_show=False):
+def plot_rand_images(img_data, labels_data, path, extension, color_map=plt.get_cmap('inferno'), qty=9, plt_size=10,
+                     plt_show=False):
     plt.figure(figsize=(plt_size, plt_size))
     grids_qty = math.ceil(math.sqrt(qty))
     for i in range(qty):
@@ -91,12 +96,14 @@ def plot_rand_images(img_data, labels_data, path, extension, color_map=plt.get_c
         plt.imshow(img_data[rand_offset], cmap=color_map)
         plt.colorbar()
         plt.xlabel(CLASS_NAMES[labels_data[rand_offset]])
+        plt.tight_layout()
         plt.savefig(path + "_rand_img." + extension)
     if plt_show:
         plt.show()
 
 
-def plot_rand_images_from_gen(x_batch, y_batch, color_map=plt.get_cmap('inferno'), qty=9, plt_size=10, plt_show=False):
+def plot_rand_images_from_gen(x_batch, y_batch, path, extension, color_map=plt.get_cmap('inferno'), qty=9, plt_size=10,
+                              plt_show=False):
     plt.figure(figsize=(plt_size, plt_size))
     grids_qty = math.ceil(math.sqrt(qty))
     for i in range(qty):
@@ -107,11 +114,14 @@ def plot_rand_images_from_gen(x_batch, y_batch, color_map=plt.get_cmap('inferno'
         plt.imshow(x_batch[i].reshape(28, 28), cmap=color_map)
         plt.colorbar()
         plt.xlabel(CLASS_NAMES[y_batch[i]])
+        plt.tight_layout()
+        plt.savefig(path + "_rand_img." + extension)
     if plt_show:
         plt.show()
 
 
-def plot_image_with_predict_bar(img_data, img_labels, predict_matr, predict_labels, path, extension, row=5, col=3, plt_show=False):
+def plot_image_with_predict_bar(img_data, img_labels, predict_matr, predict_labels, path, extension, row=5, col=3,
+                                plt_show=False):
     """
     Plot the first X test images with predicted and true labels.
     Color predictions:
