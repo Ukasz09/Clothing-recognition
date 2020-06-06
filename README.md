@@ -1,9 +1,9 @@
-# Fashion Mnist 
+# :dress: Fashion Mnist 
 
 ## Introduction
 
 ### Goal
-Classify images of clothing from dataset of Zalando's articles ([Source](https://github.com/zalandoresearch/fashion-mnist))
+Classify images of clothing from dataset of Zalando's articles ([source](https://github.com/zalandoresearch/fashion-mnist))
 
 ### Dataset
 Fashion-MNIST dataset of Zalando's article images - replacement for the original MNIST dataset for benchmarking machine learning algorithms.
@@ -11,6 +11,9 @@ Fashion-MNIST dataset of Zalando's article images - replacement for the original
 - test set (10,000 examples). 
 
 Each example is a 28x28 grayscale image, associated with a label from 10 classes. 
+
+![dataset_example](../blob/master/app/knn/models/example__rand_img_bw.png?raw=true)
+You can generate your images by using function: `app.utils.data_utils.plot_rand_images`
 
 ### Content
 
@@ -32,29 +35,27 @@ Each training and test example is assigned to one of the following labels:
 | 8 | Bag         |
 | 9 | Ankle boot  |
 
-![dataset_example](https://raw.githubusercontent.com/Ukasz09/Cloathing-recognition/master/app/knn/models/example__rand_img_bw.png)
 
-You can generate your images by using function: `app.utils.data_utils.plot_rand_images`
 
 ## Used methods
 
-Repository contains two machine learning algorithms used to build images classify tool:
+Repository contains two machine learning algorithms, used to build image classification tool:
 
 ### KNN (K-Nearest Neighbor)
 
-KNN is a non-parametric classification algorithm. The basic idea behind KNN is simple. Given a (test) vector or image to classify or label, find k vectors or images in Train Set that are “closest” to the (test) vector or image. With the k closest vectors or images, there are k labels. Assign the most frequent label of k labels to the (test) vector or image.
+KNN is a non-parametric, classification algorithm. The basic idea behind KNN is simple. Given a (test) vector or image to classify label, find k vectors or images in training set that are “closest” to the (test) vector or image. With the k closest vectors or images, there are k labels. Assign the most frequent label of k labels to the (test) vector or image.
 
-All methods for KNN algortihm and utils for plotting images and manipulate of data for KNN was written from scratch by myself (TensorFlow library is used here only for downloading training data)
+For KNN all algorithm methods, utilities for plotting images and manipulate of data, was written from scratch by myself (TensorFlow library is used here only to downloa training data)
 
-Data preprocessing:
+**Data preprocessing**:
 - splitting training data to "training" and "validation" set
 - flatting training data from size (60000,(28,28)) to (60000,784)   
-- data normalization (normalizing the data dimensions so that they are of approximately the same scale, by dividing by 255)
+- data normalization (approximately normalizing data dimensions scale - dividing by 255)
 
-Examples:
-![normalisation_example](https://raw.githubusercontent.com/Ukasz09/Cloathing-recognition/master/app/knn/models/1.png)
+**Examples**:
+![normalisation_example](../blob/master/app/knn/models/example__rand_img_bw.png?raw=true)
 
-Used metrics to measure “closeness”:
+**Used metrics to measure “closeness”**:
 | Attempt_No |  Algorithm | Max Accuracy |
 | 1 | Hamming Distance | 45% |
 | 2 | Euclidean Distance (L2) | 84,77% | 
