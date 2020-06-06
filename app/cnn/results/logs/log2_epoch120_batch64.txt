@@ -1,0 +1,9 @@
+Test name: 2_epoch120_batch64
+
+Batch size: 64
+Epochs: 120
+Started data size qty: 45000
+Prediction accuracy: 88.6% 
+Prediction loss: 0.33
+Total calculation time: 2:25:54.729328
+
