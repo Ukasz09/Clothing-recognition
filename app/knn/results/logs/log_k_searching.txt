@@ -1,0 +1,19 @@
+Searching best k for batch: 1/6
+Done in: 0:03:03.158748
+Searching best k for batch: 2/6
+Done in: 0:03:34.378442
+Searching best k for batch: 3/6
+Done in: 0:03:06.844948
+Searching best k for batch: 4/6
+Done in: 0:03:00.084049
+Searching best k for batch: 5/6
+Done in: 0:02:58.408207
+Searching best k for batch: 6/6
+Done in: 0:03:08.503211
+One batch size: 2500
+Train images qty: 45000
+Validation images qty: 15000
+Distance calc algorithm: euclidean distance (L2)
+Best k: 7
+Best error: 0.1461
+Calculation time: 0:18:51.386367

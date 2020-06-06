@@ -6,9 +6,11 @@ from app.utils.prediction_utils import *
 DISTANCE_CALC_METHOD = "euclidean distance (L2)"
 
 # -------------------------------------------------------------------------------------------------------------------- #
-PREDICTION_RESULT_CSV = "knn/results/logs/knn_predictions"
-K_VALUE_SEARCHING_LOG = "knn/results/logs/log_k_searching"
-CALCULATING_ACCURACY = "knn/results/logs/accuracy_k"
+PREDICTION_RESULT_CSV_PREF = "knn/results/logs/knn_predictions"
+K_VALUE_SEARCHING_LOG_PREF = "knn/results/logs/log_k_searching"
+CALCULATING_ACCURACY_PREF = "knn/results/logs/accuracy_k"
+RAND_IMG_PREF = "knn/results/models/example_"
+PREDICTED_IMG_BAR_PREF = "knn/results/models/example_"
 
 
 def log(txt_line, file_name):
@@ -16,8 +18,8 @@ def log(txt_line, file_name):
     print(txt_line)
 
 
-def clear_log():
-    log_printer(" ", K_VALUE_SEARCHING_LOG, None)
+def clear_log(file_name):
+    open(file_name + '.txt', 'w').close()
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -184,23 +186,23 @@ def model_select_with_splitting_to_batches(x_val, x_train, y_val, y_train, k_val
             - *best_k* - *k* for which minimal error
     """
 
-    best_k = k_values[0]
-    best_err = np.inf
-
+    k_dict = {}
+    err_dict = {}
     if batch_size < len(x_val):
         x_val_batches = split_to_batches(x_val, batch_size)
         y_val_batches = split_to_batches(y_val, batch_size)
         batches_qty = len(x_val_batches)
 
         for i in range(batches_qty):
-            log('Searching best k for batch: ' + str(i + 1) + '/' + str(batches_qty), K_VALUE_SEARCHING_LOG)
+            log('Searching best k for batch: ' + str(i + 1) + '/' + str(batches_qty), K_VALUE_SEARCHING_LOG_PREF)
             start_time = time.time()
             err, k = model_select(x_val_batches[i], x_train, y_val_batches[i], y_train, k_values)
-            if err < best_err:
-                best_err = err
-                best_k = k
+            k_dict[k] = k_dict.get(k, 0) + 1
+            err_dict[k] = err_dict.get(k, 0) + err
             end_time = time.time()
-            log("Done in: " + convert_time(end_time - start_time), K_VALUE_SEARCHING_LOG)
+            log("Done in: " + convert_time(end_time - start_time), K_VALUE_SEARCHING_LOG_PREF)
+        best_k = max(k_dict, key=k_dict.get)
+        best_err = err_dict[best_k] / k_dict[best_k]
         return best_err, best_k
     return model_select(x_val, x_train, y_val, y_train, k_values)
 

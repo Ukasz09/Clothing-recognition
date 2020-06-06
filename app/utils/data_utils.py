@@ -79,7 +79,7 @@ def log_printer(log, path_pref, name, extension="txt", append=False):
             print(log, file=f)
 
 
-def plot_rand_images(img_data, labels_data, color_map=plt.get_cmap('inferno'), qty=9, plt_size=10, plt_show=False):
+def plot_rand_images(img_data, labels_data, path, extension, color_map=plt.get_cmap('inferno'), qty=9, plt_size=10, plt_show=False):
     plt.figure(figsize=(plt_size, plt_size))
     grids_qty = math.ceil(math.sqrt(qty))
     for i in range(qty):
@@ -91,6 +91,7 @@ def plot_rand_images(img_data, labels_data, color_map=plt.get_cmap('inferno'), q
         plt.imshow(img_data[rand_offset], cmap=color_map)
         plt.colorbar()
         plt.xlabel(CLASS_NAMES[labels_data[rand_offset]])
+        plt.savefig(path + "_rand_img." + extension)
     if plt_show:
         plt.show()
 
@@ -110,7 +111,7 @@ def plot_rand_images_from_gen(x_batch, y_batch, color_map=plt.get_cmap('inferno'
         plt.show()
 
 
-def plot_image_with_predict_bar(img_data, img_labels, predict_matr, predict_labels, row=5, col=3, plt_show=False):
+def plot_image_with_predict_bar(img_data, img_labels, predict_matr, predict_labels, path, extension, row=5, col=3, plt_show=False):
     """
     Plot the first X test images with predicted and true labels.
     Color predictions:
@@ -127,6 +128,7 @@ def plot_image_with_predict_bar(img_data, img_labels, predict_matr, predict_labe
         plt.subplot(row, 2 * col, 2 * i + 2)
         __plot_predict_arr_graph(i, predict_matr[i], predict_labels[i], img_labels)
     plt.tight_layout()
+    plt.savefig(path + "_predict_bars." + extension)
     if plt_show:
         plt.show()
 
