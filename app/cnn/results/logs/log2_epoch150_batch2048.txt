@@ -1,0 +1,9 @@
+Test name: 2_epoch150_batch2048
+
+Batch size: 2048
+Epochs: 150
+Started data size qty: 45000
+Prediction accuracy: 85.22% 
+Prediction loss: 0.42
+Total calculation time: 1:37:43.682207
+

@@ -16,7 +16,7 @@ MODEL_PATH_PREF = "app/cnn/results/models/model_"
 HISTORY_PATH_PREF = "app/cnn/results/models/history_"
 RAND_IMG_PREF = "app/cnn/results/models/example2_"
 PREDICTED_IMG_BAR_PREF = "app/cnn/results/models/example_"
-MODEL_NUMBER = '2'
+MODEL_NUMBER = '3'
 log_text = ""
 
 
