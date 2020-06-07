@@ -75,14 +75,15 @@ KNN is an exception to general workflow for building/testing supervised machine 
 
 Example k search log:
 
-![k_search_log](/app/knn/results/models/readme/log.png)
+![k_search_log](/app/knn/results/models/readme/log.png) </br>
+
 (All logs you can find in: `/app/knn/results/logs/`)
 
 Finally we found best parameter **k=7**
 
 Both to test our algorithm on test data and searching best k value, first we need to split data to batches (in our case each of size=2000/2500 images). KNN is very space consuming and without splitting, we would have to need sth about 15-25GB of free RAM memory to evaluate matrices calculations.    
 
-
+___
 ### CNN (Convolutional Neural Networks)
 
 CNN image classifications takes an input image, process it and classify it under certain categories. Deep learning CNN models to train and test, each input image will pass it through a series of convolution layers with filters (kernals), pooling, fully connected layers (FC) and apply Softmax function to classify an object with probabilistic values between 0 and 1
@@ -195,7 +196,7 @@ ___
 
 - **Accuracy: 84.77%**
 - <ins> k: 7 </ins>
-- Distance calculation method: euclidean distance (L2)
+- Distance calculation method: Euclidean distance (L2)
 - Train images qty: 45000
 - Total calculation time= 0:05:05
 - Total k searching time= 0:18:51
@@ -205,7 +206,7 @@ ___
 </br>
 As we can see, compared to benchmark our result is quite good, wheras relatively short training time. ([bechmark_source](http://fashion-mnist.s3-website.eu-central-1.amazonaws.com))
 
-
+___
 ### CNN
 
 **First attempt:**
@@ -222,10 +223,10 @@ As we can see, compared to benchmark our result is quite good, wheras relatively
 
 (All models and logs you can find in: `/app/cnn/results/models/`)
 
-<p align="center"><img width=50% src="/app/cnn/results/models/readme/history_1_epoch150_batch64_augm_accuracy.png"></p>
-<p align="center"><img width=50% src="/app/cnn/results/models/readme/history_1_epoch150_batch64_augm_accuracy.png"></p>
+<p align="left"><img width=50% src="/app/cnn/results/models/readme/history_1_epoch150_batch64_augm_accuracy.png"></p>
+<p align="right"><img width=50% src="/app/cnn/results/models/readme/history_1_epoch150_batch64_augm_losses.png"></p>
 
-As we can see, futher increasing epochs value doesn't have much sense, because our accuracy and losses are becaming more and more flat. We change our model and (knowing that test data are positioned rather straight) we reduce rotation value to 5 and add negligible zoom to augmentation) 
+As we can see, futher increasing epochs value doesn't have much sense because our accuracy and losses are becaming more and more flat. We change our model and (knowing that test images are positioned rather straight) we reduce rotation value to 5 and add negligible zoom to augmentation) 
 
 ___
 **Second attempt**:
@@ -240,10 +241,10 @@ ___
 - Prediction loss: 0.33
 - Total calculation time: 2:25:54
 
-<p align="center"><img width=50% src="/app/cnn/results/models/readme/history_2_epoch120_batch64_augm_accuracy.png"></p>
-<p align="center"><img width=50% src="/app/cnn/results/models/readme/history_2_epoch120_batch64_augm_losses.png"></p>
+<p align="left"><img width=50% src="/app/cnn/results/models/readme/history_2_epoch120_batch64_augm_accuracy.png"></p>
+<p align="right"><img width=50% src="/app/cnn/results/models/readme/history_2_epoch120_batch64_augm_losses.png"></p>
 
-We achieve better results. Check if we can gain even more from this model by increasing batch size and slightly epochs too
+We achieve better results. Let's see if we can gain even more from this model, by increasing batch size and slightly epochs too
 
 ___
 **Third attempt:**
@@ -258,13 +259,13 @@ ___
 - Prediction loss: 0.42
 - Total calculation time: 1:37:43
 
-<p align="center"><img width=50% src="/app/cnn/results/models/readme/history_2_epoch150_batch2048_augm_accuracy.png"></p>
-<p align="center"><img width=50% src="/app/cnn/results/models/readme/history_2_epoch150_batch2048_augm_losses.png"></p>
+<p align="left"><img width=50% src="/app/cnn/results/models/readme/history_2_epoch150_batch2048_augm_accuracy.png"></p>
+<p align="right"><img width=50% src="/app/cnn/results/models/readme/history_2_epoch150_batch2048_augm_losses.png"></p>
 
 It's better than first attempt, but worse than last. Our augmentated data remains unchanged. We repleace our model to new and return to small batches. We als o change epochs size, because in new model, one iteration over epoch cost us much more time than in others (sth about 8 minutes per epoch)  
 
 ___
-**Fourth attempt:**
+**Fourth attempt: - best result**
 
 <ins> Test name: </ins> 3_epoch15_batch32 
 
@@ -276,11 +277,11 @@ ___
 - Prediction loss: 0.26
 - Total calculation time: 2:01:06
 
-<p align="center"><img width=50% src="/app/cnn/results/models/readme/history_3_epoch15_batch32_augm_accuracy.png"></p>
-<p align="center"><img width=50% src="/app/cnn/results/models/readme/history_3_epoch15_batch32_augm_losses.png"></p>
+<p align="left"><img width=50% src="/app/cnn/results/models/readme/history_3_epoch15_batch32_augm_accuracy.png"></p>
+<p align="right"><img width=50% src="/app/cnn/results/models/readme/history_3_epoch15_batch32_augm_losses.png"></p>
 
- Finally we achieve best result as **90,49%**, which is relatively good result (best noticed accuracy for fashion mnist was 96,7%).
- ([bechmark_source](https://github.com/zalandoresearch/fashion-mnist#benchmark)) 
+ Finally we achieve best result as **90,49%**, which is relatively good result (best noticed ever accuracy for FashionMNIST was 96,7%) ([bechmark_source](https://github.com/zalandoresearch/fashion-mnist#benchmark)). If we look at graphs we can realize that if we increase our epochs size even more, perhaps we could get maybe one 1% percent more. If you have a lot of time and you are curious about results you can check this by yourself :wink:
+  
 
 ## Usage
 

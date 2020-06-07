@@ -1,6 +1,6 @@
 KNN
 
-Distance calc algorithm: Hamming distance
+Distance calc algorithm: Euclidian distance
 k: 7
 Train images qty: 45000
 Accuracy: 84.77%
