@@ -13,7 +13,7 @@ Done in: 0:03:08.503211
 One batch size: 2500
 Train images qty: 45000
 Validation images qty: 15000
-Distance calc algorithm: euclidean distance (L2)
+Distance calc algorithm: Euclidean distance (L2)
 Best k: 7
 Best error: 0.1461
 Calculation time: 0:18:51.386367

@@ -74,8 +74,9 @@ def plot_examples(predictions, predicted_labels):
 
 
 if __name__ == "__main__":
-    #X_train, y_train, X_test, y_test = pre_processing_dataset()
-    #best_k = select_best_k(X_train, y_train)
-    #predictions_list, predicted_labels = run_knn_test(k=best_k)
-    plot_examples(predictions_list[0], predicted_labels)
+    # X_train, y_train, X_test, y_test = pre_processing_dataset()
+    # best_k = select_best_k(X_train, y_train)
+    predictions_list, predicted_labels = run_knn_test(k=7)
+    # plot_examples(predictions_list[0], predicted_labels)
+    # plot_examples()
     exit(0)

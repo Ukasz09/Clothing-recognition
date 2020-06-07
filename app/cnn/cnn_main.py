@@ -16,7 +16,7 @@ MODEL_PATH_PREF = "results/models/model_"
 HISTORY_PATH_PREF = "results/models/history_"
 RAND_IMG_PREF = "results/models/example2_"
 PREDICTED_IMG_BAR_PREF = "results/models/example_"
-MODEL_NUMBER = '2'
+MODEL_NUMBER = '1'
 log_text = ""
 
 
@@ -95,7 +95,9 @@ def plot_examples(predictions, predicted_labels, qty=9):
 
 
 if __name__ == "__main__":
+    model = create_model()
     test_name = str(MODEL_NUMBER) + '_epoch' + str(EPOCHS) + '_batch' + str(BATCH_SIZE)
-    predictions, predicted_labels = run_cnn(test_name, get_debased_data)
+    plot_model_svg(model, MODEL_PATH_PREF, test_name)
+    # predictions, predicted_labels = run_cnn(test_name, get_debased_data)
     # plot_examples(predictions, predicted_labels)
     exit(0)

@@ -23,16 +23,16 @@ def pre_processing_dataset(X_train, y_train, X_test, y_test):
 
 
 def create_model():
-    # return keras.Sequential([
-    #     Conv2D(32, (3, 3), input_shape=IMG_SHAPE, activation='relu'),
-    #     MaxPooling2D(pool_size=(2, 2)),
-    #     Conv2D(64, (3, 3), input_shape=IMG_SHAPE, activation='relu'),
-    #     MaxPooling2D(pool_size=(2, 2)),
-    #     Conv2D(128, (3, 3), activation='relu'),
-    #     Flatten(),
-    #     Dense(128, activation='relu'),
-    #     Dense(10, activation='softmax')
-    # ])
+    return keras.Sequential([
+        Conv2D(32, (3, 3), input_shape=IMG_SHAPE, activation='relu'),
+        MaxPooling2D(pool_size=(2, 2)),
+        Conv2D(64, (3, 3), input_shape=IMG_SHAPE, activation='relu'),
+        MaxPooling2D(pool_size=(2, 2)),
+        Conv2D(128, (3, 3), activation='relu'),
+        Flatten(),
+        Dense(128, activation='relu'),
+        Dense(10, activation='softmax')
+    ])
     #return keras.Sequential([
     #    Conv2D(filters=32, kernel_size=3, activation='relu', input_shape=IMG_SHAPE),
     #    MaxPooling2D(pool_size=2),
@@ -42,23 +42,23 @@ def create_model():
     #    Dense(10, activation='softmax')
     # ])
     
-     return keras.Sequential([
-     	Conv2D(32, 3, activation='relu', input_shape=IMG_SHAPE),
-        BatchNormalization(),
-        Conv2D(64, 3, activation='relu', input_shape=IMG_SHAPE), 
-        BatchNormalization(),
-        MaxPool2D(),
-        Conv2D(128, 3, activation='relu', input_shape=IMG_SHAPE), 
-        BatchNormalization(),
-        Conv2D(256, 3, activation='relu', input_shape=IMG_SHAPE), 
-        BatchNormalization(),
-        MaxPool2D(), 
-        Flatten(), 
-        Dense(256), 
-        BatchNormalization(),
-        Dropout(0.5),
-        Dense(10, activation = 'softmax')  
-     ])
+     # return keras.Sequential([
+     # 	Conv2D(32, 3, activation='relu', input_shape=IMG_SHAPE),
+     #    BatchNormalization(),
+     #    Conv2D(64, 3, activation='relu', input_shape=IMG_SHAPE),
+     #    BatchNormalization(),
+     #    MaxPool2D(),
+     #    Conv2D(128, 3, activation='relu', input_shape=IMG_SHAPE),
+     #    BatchNormalization(),
+     #    Conv2D(256, 3, activation='relu', input_shape=IMG_SHAPE),
+     #    BatchNormalization(),
+     #    MaxPool2D(),
+     #    Flatten(),
+     #    Dense(256),
+     #    BatchNormalization(),
+     #    Dropout(0.5),
+     #    Dense(10, activation = 'softmax')
+     # ])
      
 def compile_model(model):
     model.compile(optimizer=Adam(lr=0.0001, decay=1e-6), loss='sparse_categorical_crossentropy', metrics=['accuracy'])

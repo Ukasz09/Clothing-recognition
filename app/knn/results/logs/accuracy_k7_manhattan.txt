@@ -1,0 +1,7 @@
+KNN
+
+Distance calc algorithm: Hamming distance
+k: 7
+Train images qty: 45000
+Accuracy: 10.08%
+Total calculation time= 0:05:13.217905

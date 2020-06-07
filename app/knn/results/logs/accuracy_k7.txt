@@ -1,7 +1,0 @@
-KNN
-
-Distance calc algorithm: euclidean distance (L2)
-k: 7
-Train images qty: 45000
-Accuracy: 84.77%
-Total calculation time= 0:05:45.621309

@@ -3,14 +3,15 @@ import time
 from app.utils.data_utils import *
 from app.utils.prediction_utils import *
 
-DISTANCE_CALC_METHOD = "euclidean distance (L2)"
+# DISTANCE_CALC_METHOD = "euclidean distance (L2)"
+DISTANCE_CALC_METHOD = "Hamming distance"
 
 # -------------------------------------------------------------------------------------------------------------------- #
-PREDICTION_RESULT_CSV_PREF = "app/knn/results/logs/knn_predictions"
-K_VALUE_SEARCHING_LOG_PREF = "app/knn/results/logs/log_k_searching"
-CALCULATING_ACCURACY_PREF = "app/knn/results/logs/accuracy_k"
-RAND_IMG_PREF = "app/knn/results/models/example_"
-PREDICTED_IMG_BAR_PREF = "app/knn/results/models/example_"
+PREDICTION_RESULT_CSV_PREF = "knn/results/logs/knn_predictions"
+K_VALUE_SEARCHING_LOG_PREF = "knn/results/logs/log_k_searching"
+CALCULATING_ACCURACY_PREF = "knn/results/logs/accuracy_k"
+RAND_IMG_PREF = "knn/results/models/example_"
+PREDICTED_IMG_BAR_PREF = "knn/results/models/example_"
 
 
 def log(txt_line, file_name):
@@ -83,8 +84,8 @@ def hamming_distance(X, X_train):
     :param X_train: to what compare [N2xD]
     :return: matrix distances between "X" and "X_train" [N1xN2]
     """
-    X_arr = X.toarray().astype(int)
-    X_arr_trans = np.transpose(X_train.toarray()).astype(int)
+    X_arr = X.astype(int)
+    X_arr_trans = np.transpose(X_train).astype(int)
     return np.array(X_arr.shape[1] - X_arr @ X_arr_trans - (1 - X_arr) @ (1 - X_arr_trans))
 
 
@@ -100,6 +101,15 @@ def euclidean_distance(x, x_train):
     sum_square_train = np.square(x_train).sum(axis=1)
     dists = np.sqrt(-2 * dot_product + sum_square_train + np.array([sum_square_test]).T)
     return dists
+
+
+def manhattan_distance(x, x_train):
+    """
+    :param x: what compare [N1xD]
+    :param x_train: to what compare [N2xD]
+    :return: matrix distances between "X" and "X_train" [N1xN2]
+    """
+    return np.abs(x[:, 0, None] - x_train[:, 0]) + np.abs(x[:, 1, None] - x_train[:, 1])
 
 
 # In every row labels sorted by distance

@@ -59,10 +59,13 @@ For KNN all algorithm methods, utilities for plotting images and manipulate of d
 
 **Used metrics to measure “closeness”**:
 
-| Attempt_No | Algorithm | Max Accuracy |
-| ---------- | --------- | ------------ | 
-| 1 | Hamming Distance | 45% |
-| 2 | Euclidean Distance (L2) | 84,77% |
+| Attempt_No | Algorithm | 
+| ---------- | --------- |  
+| 1 | Manhattan Distance | 
+| 2 | Hamming Distance | 
+| 3 | Euclidean Distance (L2) | 
+
+
 
 KNN is an exception to general workflow for building/testing supervised machine learning models. There is no model build and becouse of that we don't have a training and validating set. All what we can do is selecting best k parameter and "closeness" parameter. To find it we can split our data to sth like "training" and "validation" set, which will be used in distance calculating method.
 
@@ -70,12 +73,15 @@ KNN is an exception to general workflow for building/testing supervised machine 
 - <ins> "Train" images qty <ins>: 45000
 - <ins> "Validation" images qty <ins>: 15000
 
+Example k search log:
+
 ![k_search_log](/app/knn/results/models/readme/log.png)
 (All logs you can find in: `/app/knn/results/logs/`)
 
 Finally we found best parameter **k=7**
 
 Both to test our algorithm on test data and searching best k value, first we need to split data to batches (in our case each of size=2000/2500 images). KNN is very space consuming and without splitting, we would have to need sth about 15-25GB of free RAM memory to evaluate matrices calculations.    
+
 
 ### CNN (Convolutional Neural Networks)
 
@@ -103,7 +109,7 @@ Example augmentated data:
 ![augmentated_data](/app/cnn/results/models/readme/example_augm_rand.png)
 (You can generate your augmentiated images plots by using function: `app.utils.data_utils.plot_rand_images_from_gen`)
 
-Validation set to training set proportions: 1/4
+**Validation set to training set proportions:** 1/4
 
 **Used models**: </br>
 
@@ -118,6 +124,7 @@ Validation set to training set proportions: 1/4
 | Flatten | Flattens the input |
 | Dense | Regural, fully-connected NN layer|
 
+___
 <ins>Model 2:</ins>
 
 ![model_2](/app/cnn/results/models/readme/model_2.png)
@@ -130,6 +137,9 @@ Validation set to training set proportions: 1/4
 | Dropout | Reducing overfitting |
 | Dense | Regural, fully-connected NN layer|
 
+___
+<ins>Model 3:</ins>
+
 ![model_3](/app/cnn/results/models/readme/model_3.png)
 
 | Layers | Description |
@@ -141,6 +151,7 @@ Validation set to training set proportions: 1/4
 | Dropout | Reducing overfitting |
 | Dense | Regural, fully-connected NN layer|
 
+___
 **Training attempts**:
 
 | Attempt_no | Model_no | Batch size | Epochs | Augmentation_no | Time |
@@ -154,19 +165,44 @@ Validation set to training set proportions: 1/4
 
 ## Results 
 
+**Example predictions:**
+
+![example_pred_knn](/app/knn/results/models/readme/example__predict_bars.png)
+
+(You can generate your predictions by using: `app.utils.data_utils.plot_image_with_predict_bar`)
+
 ### KNN
 
-<ins> Best result: </ins>
+**Manhattan Distance:**
 
--**Accuracy: 84.77%**
--<ins> k: 7 </ins>
--Distance calculation method: euclidean distance (L2)
--Train images qty: 45000
--Total calculation time= 0:05:45
--Total k searching time= 0:18:51
+- **Accuracy: 10.08%**
+- <ins> k: 7 </ins>
+- Distance calculation method: Manhattan Distance
+- Train images qty: 45000
+- Total calculation time= 0:05:13
+- Total k searching time= 0:12:21
+
+**Hamming Distance:**
+
+- **Accuracy: 36.77%**
+- <ins> k: 7 </ins>
+- Distance calculation method: Hamming Distance
+- Train images qty: 45000
+- Total calculation time= 0:14:31
+- Total k searching time= 0:14:31
+
+**Euclidean Distance - Best result:**
+
+- **Accuracy: 84.77%**
+- <ins> k: 7 </ins>
+- Distance calculation method: euclidean distance (L2)
+- Train images qty: 45000
+- Total calculation time= 0:05:05
+- Total k searching time= 0:18:51
 
 ![Benchmark](/app/knn/results/models/readme/benchmark.png)
 
+</br>
 As we can see, compared to benchmark our result is quite good, wheras relatively short training time. ([bechmark_source](http://fashion-mnist.s3-website.eu-central-1.amazonaws.com))
 
 
@@ -186,8 +222,8 @@ As we can see, compared to benchmark our result is quite good, wheras relatively
 
 (All models and logs you can find in: `/app/cnn/results/models/`)
 
-![Accuracy_1](/app/cnn/results/models/readme/history_1_epoch150_batch64_augm_accuracy.png)
-![Losses_1](/app/cnn/results/models/readme/history_1_epoch150_batch64_augm_losses.png)
+<p align="center"><img width=50% src="/app/cnn/results/models/readme/history_1_epoch150_batch64_augm_accuracy.png"></p>
+<p align="center"><img width=50% src="/app/cnn/results/models/readme/history_1_epoch150_batch64_augm_accuracy.png"></p>
 
 As we can see, futher increasing epochs value doesn't have much sense, because our accuracy and losses are becaming more and more flat. We change our model and (knowing that test data are positioned rather straight) we reduce rotation value to 5 and add negligible zoom to augmentation) 
 
@@ -204,8 +240,8 @@ ___
 - Prediction loss: 0.33
 - Total calculation time: 2:25:54
 
-![Accuracy_2](/app/cnn/results/models/readme/history_2_epoch120_batch64_augm_accuracy.png)
-![Losses_2](/app/cnn/results/models/readme/history_2_epoch120_batch64_augm_losses.png)
+<p align="center"><img width=50% src="/app/cnn/results/models/readme/history_2_epoch120_batch64_augm_accuracy.png"></p>
+<p align="center"><img width=50% src="/app/cnn/results/models/readme/history_2_epoch120_batch64_augm_losses.png"></p>
 
 We achieve better results. Check if we can gain even more from this model by increasing batch size and slightly epochs too
 
@@ -222,10 +258,10 @@ ___
 - Prediction loss: 0.42
 - Total calculation time: 1:37:43
 
-![Accuracy_3](/app/cnn/results/models/readme/history_2_epoch150_batch2048_augm_accuracy.png)
-![Losses_3](/app/cnn/results/models/readme/history_2_epoch150_batch2048_augm_losses.png)
+<p align="center"><img width=50% src="/app/cnn/results/models/readme/history_2_epoch150_batch2048_augm_accuracy.png"></p>
+<p align="center"><img width=50% src="/app/cnn/results/models/readme/history_2_epoch150_batch2048_augm_losses.png"></p>
 
-It's better than first attempt, but worse than last. Our augmentated data remains unchanged. We repleace our model to new and return to small batches. We als o change epochs size, becaouse in our new model one iteration over epoch cost us much more time than in others (sth about 8 minutes per epoch)  
+It's better than first attempt, but worse than last. Our augmentated data remains unchanged. We repleace our model to new and return to small batches. We als o change epochs size, because in new model, one iteration over epoch cost us much more time than in others (sth about 8 minutes per epoch)  
 
 ___
 **Fourth attempt:**
@@ -240,8 +276,8 @@ ___
 - Prediction loss: 0.26
 - Total calculation time: 2:01:06
 
-![Accuracy_4](/app/cnn/results/models/readme/history_3_epoch15_batch32_augm_accuracy.png)
-![Losses_4](/app/cnn/results/models/readme/history_3_epoch15_batch32_augm_losses.png)
+<p align="center"><img width=50% src="/app/cnn/results/models/readme/history_3_epoch15_batch32_augm_accuracy.png"></p>
+<p align="center"><img width=50% src="/app/cnn/results/models/readme/history_3_epoch15_batch32_augm_losses.png"></p>
 
  Finally we achieve best result as **90,49%**, which is relatively good result (best noticed accuracy for fashion mnist was 96,7%).
  ([bechmark_source](https://github.com/zalandoresearch/fashion-mnist#benchmark)) 
