@@ -204,7 +204,9 @@ ___
 ![Benchmark](/app/knn/results/models/readme/benchmark.png)
 
 </br>
-As we can see, compared to benchmark our result is quite good, wheras relatively short training time. ([bechmark_source](http://fashion-mnist.s3-website.eu-central-1.amazonaws.com))
+As we can see, compared to benchmark our result is quite good, wheras relatively short training time.
+
+([bechmark_source](http://fashion-mnist.s3-website.eu-central-1.amazonaws.com))
 
 ___
 ### CNN
@@ -223,8 +225,9 @@ ___
 
 (All models and logs you can find in: `/app/cnn/results/models/`)
 
-<p align="left"><img width=50% src="/app/cnn/results/models/readme/history_1_epoch150_batch64_augm_accuracy.png"></p>
-<p align="right"><img width=50% src="/app/cnn/results/models/readme/history_1_epoch150_batch64_augm_losses.png"></p>
+| Accuracy |  Losses |
+| -------- | ------- |
+| ![](/app/cnn/results/models/readme/history_1_epoch150_batch64_augm_accuracy.png) | ![](/app/cnn/results/models/readme/history_1_epoch150_batch64_augm_losses.png) |
 
 As we can see, futher increasing epochs value doesn't have much sense because our accuracy and losses are becaming more and more flat. We change our model and (knowing that test images are positioned rather straight) we reduce rotation value to 5 and add negligible zoom to augmentation) 
 
@@ -241,8 +244,9 @@ ___
 - Prediction loss: 0.33
 - Total calculation time: 2:25:54
 
-<p align="left"><img width=50% src="/app/cnn/results/models/readme/history_2_epoch120_batch64_augm_accuracy.png"></p>
-<p align="right"><img width=50% src="/app/cnn/results/models/readme/history_2_epoch120_batch64_augm_losses.png"></p>
+| Accuracy |  Losses |
+| -------- | ------- |
+| ![](/app/cnn/results/models/readme/history_2_epoch120_batch64_augm_accuracy.png) | ![](/app/cnn/results/models/readme/history_2_epoch120_batch64_augm_losses.png) |
 
 We achieve better results. Let's see if we can gain even more from this model, by increasing batch size and slightly epochs too
 
@@ -259,8 +263,10 @@ ___
 - Prediction loss: 0.42
 - Total calculation time: 1:37:43
 
-<p align="left"><img width=50% src="/app/cnn/results/models/readme/history_2_epoch150_batch2048_augm_accuracy.png"></p>
-<p align="right"><img width=50% src="/app/cnn/results/models/readme/history_2_epoch150_batch2048_augm_losses.png"></p>
+| Accuracy |  Losses |
+| -------- | ------- |
+| ![](/app/cnn/results/models/readme/history_2_epoch150_batch2048_augm_accuracy.png) | ![](/app/cnn/results/models/readme/history_2_epoch150_batch2048_augm_losses.png) |
+
 
 It's better than first attempt, but worse than last. Our augmentated data remains unchanged. We repleace our model to new and return to small batches. We als o change epochs size, because in new model, one iteration over epoch cost us much more time than in others (sth about 8 minutes per epoch)  
 
@@ -277,8 +283,9 @@ ___
 - Prediction loss: 0.26
 - Total calculation time: 2:01:06
 
-<p align="left"><img width=50% src="/app/cnn/results/models/readme/history_3_epoch15_batch32_augm_accuracy.png"></p>
-<p align="right"><img width=50% src="/app/cnn/results/models/readme/history_3_epoch15_batch32_augm_losses.png"></p>
+| Accuracy |  Losses |
+| -------- | ------- |
+| ![](/app/cnn/results/models/readme/history_3_epoch15_batch32_augm_accuracy.png) | ![](/app/cnn/results/models/readme/history_3_epoch15_batch32_augm_losses.png) |
 
  Finally we achieve best result as **90,49%**, which is relatively good result (best noticed ever accuracy for FashionMNIST was 96,7%) ([bechmark_source](https://github.com/zalandoresearch/fashion-mnist#benchmark)). If we look at graphs we can realize that if we increase our epochs size even more, perhaps we could get maybe one 1% percent more. If you have a lot of time and you are curious about results you can check this by yourself :wink:
   

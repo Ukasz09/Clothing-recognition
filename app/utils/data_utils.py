@@ -63,18 +63,16 @@ def split_to_batches(x, batch_size):
     return batches
 
 
-def save_labels_to_csv(labels_list, filename):
-    with open(filename + '.csv', 'w', newline='') as csv_file:
+def save_labels_to_csv(labels_list, path_prefix, filename):
+    with open(path_prefix + filename + '.csv', 'w', newline='') as csv_file:
         wr = csv.writer(csv_file, delimiter=',', quotechar='"')
         for i in range(len(labels_list)):
             wr.writerow([i, labels_list[i]])
 
 
-def log_printer(log, path_pref, name, extension="txt", append=False):
-    if name is None:
-        path = path_pref + "." + extension
-    else:
-        path = path_pref + name + "." + extension
+def log_printer(log, filepath, filename, extension="txt", append=False):
+    path = filepath
+    path += '.' + extension if filename is None else filename + "." + extension
     if append:
         with open(path, 'a') as f:
             print(log, file=f)
@@ -83,8 +81,7 @@ def log_printer(log, path_pref, name, extension="txt", append=False):
             print(log, file=f)
 
 
-def plot_rand_images(img_data, labels_data, path, extension, color_map=plt.get_cmap('inferno'), qty=9, plt_size=10,
-                     plt_show=False):
+def plot_rand_images(img_data, labels_data, filepath, extension, color_map=plt.get_cmap('inferno'), qty=9, plt_size=10):
     plt.figure(figsize=(plt_size, plt_size))
     grids_qty = math.ceil(math.sqrt(qty))
     for i in range(qty):
@@ -97,13 +94,12 @@ def plot_rand_images(img_data, labels_data, path, extension, color_map=plt.get_c
         plt.colorbar()
         plt.xlabel(CLASS_NAMES[labels_data[rand_offset]])
         plt.tight_layout()
-        plt.savefig(path + "_rand_img." + extension)
-    if plt_show:
-        plt.show()
+        plt.savefig(filepath + "_rand_img." + extension)
+    plt.show()
 
 
-def plot_rand_images_from_gen(x_batch, y_batch, path, extension, color_map=plt.get_cmap('inferno'), qty=9, plt_size=10,
-                              plt_show=False):
+def plot_rand_images_from_gen(x_batch, y_batch, filepath, extension, color_map=plt.get_cmap('inferno'), qty=9,
+                              plt_size=10):
     plt.figure(figsize=(plt_size, plt_size))
     grids_qty = math.ceil(math.sqrt(qty))
     for i in range(qty):
@@ -115,13 +111,11 @@ def plot_rand_images_from_gen(x_batch, y_batch, path, extension, color_map=plt.g
         plt.colorbar()
         plt.xlabel(CLASS_NAMES[y_batch[i]])
         plt.tight_layout()
-        plt.savefig(path + "_rand_img." + extension)
-    if plt_show:
-        plt.show()
+        plt.savefig(filepath + "_rand_img." + extension)
+    plt.show()
 
 
-def plot_image_with_predict_bar(img_data, img_labels, predict_matr, predict_labels, path, extension, row=5, col=3,
-                                plt_show=False):
+def plot_image_with_predict_bar(img_data, img_labels, predict_matr, predict_labels, path, extension, row=5, col=3):
     """
     Plot the first X test images with predicted and true labels.
     Color predictions:
@@ -139,8 +133,7 @@ def plot_image_with_predict_bar(img_data, img_labels, predict_matr, predict_labe
         __plot_predict_arr_graph(i, predict_matr[i], predict_labels[i], img_labels)
     plt.tight_layout()
     plt.savefig(path + "_predict_bars." + extension)
-    if plt_show:
-        plt.show()
+    plt.show()
 
 
 def __plot_image_with_axis(i, predictions_array, predicted_label, true_label, img):

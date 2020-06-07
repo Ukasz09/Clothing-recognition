@@ -1,0 +1,9 @@
+Test name: 3_epoch15_batch32
+
+Batch size: 15
+Epochs: 32
+Started data size qty: 150
+Prediction accuracy: 30.0% 
+Prediction loss: 2.07
+Total calculation time: 0:01:39.723925
+

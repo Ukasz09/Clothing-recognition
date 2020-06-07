@@ -27,7 +27,7 @@ def run_knn_test(val_size=VAL_SIZE, k=BEST_K):
     print('\n------------- Predicting labels for test data')
     predicted_labels = predict_labels_for_every_batch(predictions_list)
     print('------------- Saving prediction results to file')
-    save_labels_to_csv(predicted_labels, LOGS_PATH + PREDICT_CSV_PREFIX + distance_name + "_k" + str(k))
+    save_labels_to_csv(predicted_labels, LOGS_PATH,  PREDICT_CSV_PREFIX + distance_name + "_k" + str(k))
     print('------------- Evaluating accuracy ')
     accuracy = calc_accuracy(predicted_labels, y_test)
     print('------------- Saving prediction results to file  ')
@@ -70,8 +70,8 @@ def plot_examples(predictions, predicted_labels):
     X_train, y_train, X_test, y_test = load_normal_data()
     X_train, X_test = scale_x(X_train, X_test)
     image_path = MODELS_PATH + EXAMPLE_IMG_PREFIX
-    plot_rand_images(X_train, y_train, image_path, 'png', plt_show=True)
-    plot_image_with_predict_bar(X_test, y_test, predictions, predicted_labels, image_path, 'png', plt_show=True)
+    plot_rand_images(X_train, y_train, image_path, 'png')
+    plot_image_with_predict_bar(X_test, y_test, predictions, predicted_labels, image_path, 'png')
 
 
 if __name__ == "__main__":

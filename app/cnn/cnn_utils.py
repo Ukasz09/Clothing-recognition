@@ -1,17 +1,14 @@
-from IPython.core.display import SVG
-from tensorflow.python.keras.utils.vis_utils import plot_model, model_to_dot
-
+from app.cnn.models import available_models
 from app.utils.data_utils import *
-from tensorflow import keras
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.layers import *
 from tensorflow.keras.optimizers import Adam
 
 VAL_SIZE = 0.25
 RANDOM_STATE = 2046703
-
-EPOCHS = 15 
+EPOCHS = 15
 BATCH_SIZE = 32
+
+USED_MODEL_NUMBER = 3
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -23,43 +20,9 @@ def pre_processing_dataset(X_train, y_train, X_test, y_test):
 
 
 def create_model():
-    return keras.Sequential([
-        Conv2D(32, (3, 3), input_shape=IMG_SHAPE, activation='relu'),
-        MaxPooling2D(pool_size=(2, 2)),
-        Conv2D(64, (3, 3), input_shape=IMG_SHAPE, activation='relu'),
-        MaxPooling2D(pool_size=(2, 2)),
-        Conv2D(128, (3, 3), activation='relu'),
-        Flatten(),
-        Dense(128, activation='relu'),
-        Dense(10, activation='softmax')
-    ])
-    #return keras.Sequential([
-    #    Conv2D(filters=32, kernel_size=3, activation='relu', input_shape=IMG_SHAPE),
-    #    MaxPooling2D(pool_size=2),
-    #    Dropout(0.2),
-    #    Flatten(),
-    #    Dense(32, activation='relu'),
-    #    Dense(10, activation='softmax')
-    # ])
-    
-     # return keras.Sequential([
-     # 	Conv2D(32, 3, activation='relu', input_shape=IMG_SHAPE),
-     #    BatchNormalization(),
-     #    Conv2D(64, 3, activation='relu', input_shape=IMG_SHAPE),
-     #    BatchNormalization(),
-     #    MaxPool2D(),
-     #    Conv2D(128, 3, activation='relu', input_shape=IMG_SHAPE),
-     #    BatchNormalization(),
-     #    Conv2D(256, 3, activation='relu', input_shape=IMG_SHAPE),
-     #    BatchNormalization(),
-     #    MaxPool2D(),
-     #    Flatten(),
-     #    Dense(256),
-     #    BatchNormalization(),
-     #    Dropout(0.5),
-     #    Dense(10, activation = 'softmax')
-     # ])
-     
+    return available_models[USED_MODEL_NUMBER]
+
+
 def compile_model(model):
     model.compile(optimizer=Adam(lr=0.0001, decay=1e-6), loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
@@ -102,33 +65,28 @@ def make_prediction(model, x_test):
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
-def plot_history_graphs(history, path_pref, name, extension=".png"):
-    plot_accuracy_history(history, path_pref, name, extension)
-    plot_losses_history(history, path_pref, name, extension)
+def plot_history_graphs(history, path_prefix, filename, extension=".png"):
+    plot_accuracy_history(history, path_prefix, filename, extension)
+    plot_losses_history(history, path_prefix, filename, extension)
 
 
-def plot_accuracy_history(history, path_pref, name, extension):
+def plot_accuracy_history(history, path_prefix, filename, extension):
     plt.plot(history.history['accuracy'])
     plt.plot(history.history['val_accuracy'])
-    plt.title('Model accuracy: ' + name)
+    plt.title('Model accuracy: ' + filename)
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
     plt.legend(['train', 'validation'], loc='upper left')
-    plt.savefig(path_pref + name + "_accuracy" + extension)
+    plt.savefig(path_prefix + filename + "_accuracy" + extension)
     plt.show()
 
 
-def plot_losses_history(history, path_pref, name, extension):
+def plot_losses_history(history, path_prefix, filename, extension):
     plt.plot(history.history['loss'])
     plt.plot(history.history['val_loss'])
-    plt.title('Model loss: ' + name)
+    plt.title('Model loss: ' + filename)
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend(['train', 'validation'], loc='upper left')
-    plt.savefig(path_pref + name + "_losses" + extension)
+    plt.savefig(path_prefix + filename + "_losses" + extension)
     plt.show()
-
-
-def plot_model_svg(model, path_pref, name):
-    plot_model(model, to_file=path_pref + name + ".png")
-    SVG(model_to_dot(model).create(prog='dot', format='svg'))
