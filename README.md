@@ -12,7 +12,7 @@ Fashion-MNIST dataset of Zalando's article images - replacement for the original
 
 Each example is a 28x28 grayscale image, associated with a label from 10 classes. 
 
-![dataset_example](/app/knn/results/models/example__rand_img_bw.png)
+![dataset_example](/app/knn/results/models/readme/example__rand_img_bw.png)
 (You can generate your plots by using function: `app.utils.data_utils.plot_rand_images`)
 
 ### Content
@@ -54,7 +54,8 @@ For KNN all algorithm methods, utilities for plotting images and manipulate of d
 
 **Examples**:
 
-![normalisation_example](/app/knn/results/models/example__rand_img_bw.png)
+![normalization_example](/app/knn/results/models/readme/example__rand_img_scaled.png)
+(Normalized data: `app.utils.data_utils.plot_rand_images`)
 
 **Used metrics to measure “closeness”**:
 
@@ -69,7 +70,8 @@ KNN is an exception to general workflow for building/testing supervised machine 
 - <ins> "Train" images qty <ins>: 45000
 - <ins> "Validation" images qty <ins>: 15000
 
-![k_search_log](/app/knn/results/models/example__rand_img_bw.png)
+![k_search_log](/app/knn/results/models/readme/log.png)
+(All logs you can find in: `/app/knn/results/logs/`)
 
 Finally we found best parameter **k=7**
 
@@ -98,7 +100,7 @@ Used augmentations techniques:
 
 Example augmentated data:
 
-![augmentated_data](/app/knn/results/models/example__rand_img_bw.png)
+![augmentated_data](/app/cnn/results/models/readme/example_augm_rand.png)
 (You can generate your augmentiated images plots by using function: `app.utils.data_utils.plot_rand_images_from_gen`)
 
 Validation set to training set proportions: 1/4
@@ -107,7 +109,7 @@ Validation set to training set proportions: 1/4
 
 <ins>Model 1:</ins>
 
-![model_1](/app/knn/results/models/example__rand_img_bw.png)
+![model_1](/app/cnn/results/models/readme/model_1.png)
 
 | Layers | Description |
 | ------ | ----------- |
@@ -118,7 +120,7 @@ Validation set to training set proportions: 1/4
 
 <ins>Model 2:</ins>
 
-![model_2](/app/knn/results/models/example__rand_img_bw.png)
+![model_2](/app/cnn/results/models/readme/model_2.png)
 
 | Layers | Description |
 | ------ | ----------- |
@@ -128,13 +130,27 @@ Validation set to training set proportions: 1/4
 | Dropout | Reducing overfitting |
 | Dense | Regural, fully-connected NN layer|
 
+![model_3](/app/cnn/results/models/readme/model_3.png)
+
+| Layers | Description |
+| ------ | ----------- |
+| Conv2D | 2D convolutional layer |
+| MaxPooling2D | Max pooling operation for spatial data |
+| Batch normalization | Normalize the input layer by re-centering and re-scaling |
+| Flatten | Flattens the input |
+| Dropout | Reducing overfitting |
+| Dense | Regural, fully-connected NN layer|
+
 **Training attempts**:
 
 | Attempt_no | Model_no | Batch size | Epochs | Augmentation_no | Time |
 | ------ | ----------- | ----------- | ----------- | ----------- | ----------- |
 | 1 | 1 | 64 | 150 | 1 | 3:28:06 |
-| 2 | 2 | 64 | 120 | 2 | x |
+| 2 | 2 | 64 | 120 | 2 | 2:25:54 |
+| 3 | 2 | 2048 | 150 | 2 | 1:37:43 |
+| 4 | 3 | 32 | 15 | 2 | 2:01:06 |
 
+(All logs you can find in: `/app/cnn/results/logs/`)
 
 ## Results 
 
@@ -149,9 +165,10 @@ Validation set to training set proportions: 1/4
 -Total calculation time= 0:05:45
 -Total k searching time= 0:18:51
 
-![Benchmark](/app/knn/results/models/example__rand_img_bw.png)
+![Benchmark](/app/knn/results/models/readme/benchmark.png)
 
-As we can see, compared to benchmark our result is quite good, wheras relatively short training time
+As we can see, compared to benchmark our result is quite good, wheras relatively short training time. ([bechmark_source](http://fashion-mnist.s3-website.eu-central-1.amazonaws.com))
+
 
 ### CNN
 
@@ -160,50 +177,74 @@ As we can see, compared to benchmark our result is quite good, wheras relatively
 <ins> Test name: </ins>  1_epoch150_batch64
 
 - **Prediction accuracy: 84.61%** 
+- Model number: 1
 - Batch size: 64
 - Epochs: 150
 - Started data size qty: 45000
 - Prediction loss: 0.44
 - Total calculation time: 3:28:06
 
-![Losses1](/app/knn/results/models/example__rand_img_bw.png)
-![Accuracy1](/app/knn/results/models/example__rand_img_bw.png)
+(All models and logs you can find in: `/app/cnn/results/models/`)
 
-As we can see, futher increasing epochs value doesn't have sense, because our accuracy and losses are becaming more and more flat. We change our model and (knowing that test data are positioned straight) we reduce rotation value to 5 and add negligible zoom to augmentation) 
+![Accuracy_1](/app/cnn/results/models/readme/history_1_epoch150_batch64_augm_accuracy.png)
+![Losses_1](/app/cnn/results/models/readme/history_1_epoch150_batch64_augm_losses.png)
+
+As we can see, futher increasing epochs value doesn't have much sense, because our accuracy and losses are becaming more and more flat. We change our model and (knowing that test data are positioned rather straight) we reduce rotation value to 5 and add negligible zoom to augmentation) 
 
 ___
 **Second attempt**:
 
 <ins> Test name: </ins> 2_epoch120_batch64
 
-- **Prediction accuracy: 88,6%** 
+- **Prediction accuracy: 88,60%** 
+- Model number: 2
 - Batch size: 64
 - Epochs: 120
 - Started data size qty: 45000
 - Prediction loss: 0.33
 - Total calculation time: 2:25:54
 
-![Losses2](/app/knn/results/models/example__rand_img_bw.png)
-![Accuracy2](/app/knn/results/models/example__rand_img_bw.png)
+![Accuracy_2](/app/cnn/results/models/readme/history_2_epoch120_batch64_augm_accuracy.png)
+![Losses_2](/app/cnn/results/models/readme/history_2_epoch120_batch64_augm_losses.png)
 
 We achieve better results. Check if we can gain even more from this model by increasing batch size and slightly epochs too
 
 ___
 **Third attempt:**
 
-<ins> Test name: </ins> X 
+<ins> Test name: </ins> 2_epoch150_batch2048 
 
-- **Prediction accuracy: X%** 
-- Batch size: x
-- Epochs: x
+- **Prediction accuracy: 85,22%** 
+- Model number: 2
+- Batch size: 2048
+- Epochs: 150
 - Started data size qty: 45000
-- Prediction loss: X
-- Total calculation time: X
+- Prediction loss: 0.42
+- Total calculation time: 1:37:43
 
-![Losses3](/app/knn/results/models/example__rand_img_bw.png)
-![Accuracy3](https://raw.githubusercontent.com/Ukasz09/Clothing-recognition/master/app/knn/results/models/example__rand_img_bw.png)
+![Accuracy_3](/app/cnn/results/models/readme/history_2_epoch150_batch2048_augm_accuracy.png)
+![Losses_3](/app/cnn/results/models/readme/history_2_epoch150_batch2048_augm_losses.png)
 
-<results summary>
+It's better than first attempt, but worse than last. Our augmentated data remains unchanged. We repleace our model to new and return to small batches. We als o change epochs size, becaouse in our new model one iteration over epoch cost us much more time than in others (sth about 8 minutes per epoch)  
+
+___
+**Fourth attempt:**
+
+<ins> Test name: </ins> 3_epoch15_batch32 
+
+- **Prediction accuracy: 90.49%**
+- Model number: 3
+- Batch size: 32
+- Epochs: 15
+- Started data size qty: 45000
+- Prediction loss: 0.26
+- Total calculation time: 2:01:06
+
+![Accuracy_4](/app/cnn/results/models/readme/history_3_epoch15_batch32_augm_accuracy.png)
+![Losses_4](/app/cnn/results/models/readme/history_3_epoch15_batch32_augm_losses.png)
+
+ Finally we achieve best result as **90,49%**, which is relatively good result (best noticed accuracy for fashion mnist was 96,7%).
+ ([bechmark_source](https://github.com/zalandoresearch/fashion-mnist#benchmark)) 
 
 ## Usage
 

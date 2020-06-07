@@ -6,11 +6,11 @@ from app.utils.prediction_utils import *
 DISTANCE_CALC_METHOD = "euclidean distance (L2)"
 
 # -------------------------------------------------------------------------------------------------------------------- #
-PREDICTION_RESULT_CSV_PREF = "knn/results/logs/knn_predictions"
-K_VALUE_SEARCHING_LOG_PREF = "knn/results/logs/log_k_searching"
-CALCULATING_ACCURACY_PREF = "knn/results/logs/accuracy_k"
-RAND_IMG_PREF = "knn/results/models/example_"
-PREDICTED_IMG_BAR_PREF = "knn/results/models/example_"
+PREDICTION_RESULT_CSV_PREF = "app/knn/results/logs/knn_predictions"
+K_VALUE_SEARCHING_LOG_PREF = "app/knn/results/logs/log_k_searching"
+CALCULATING_ACCURACY_PREF = "app/knn/results/logs/accuracy_k"
+RAND_IMG_PREF = "app/knn/results/models/example_"
+PREDICTED_IMG_BAR_PREF = "app/knn/results/models/example_"
 
 
 def log(txt_line, file_name):
